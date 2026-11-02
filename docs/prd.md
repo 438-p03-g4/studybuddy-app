@@ -17,7 +17,7 @@ Who is this for? Name **one** primary user type and describe them in one or two 
 "Everyone" and "students" are not user types; "a first-year student looking for a study group for
 one specific course" is.
 
-- **Primary user:** `<who they are, what they are trying to do>`
+- **Primary user:** `A sudent looking to focus on studying/working on assignments without distractions, as well as potentially find a study group for a course or project.`
 - **Secondary user (optional):** `<for example, an admin>`
 
 ## 2. Problem
