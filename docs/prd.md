@@ -7,7 +7,7 @@
 > After the presentation, change it only through pull requests, so the history shows what changed and why.
 > Your Final Submission is graded against this document.
 
-**Team:** `Group 4` · **Repo:** `https://github.com/438-p03-g4/studybuddy-app` · **Last updated:** `11/2/26`
+**Team:** `Group 4` · **Repo:** `https://github.com/orgs/438-p03-g4/repositories` · **Last updated:** `11/2/26`
 
 ---
 
@@ -17,7 +17,7 @@ Who is this for? Name **one** primary user type and describe them in one or two 
 "Everyone" and "students" are not user types; "a first-year student looking for a study group for
 one specific course" is.
 
-- **Primary user:** `A sudent looking to focus on studying/working on assignments without distractions, as well as potentially find a study group for a course or project.`
+- **Primary user:** `A student looking to focus on studying/working on assignments without distractions, as well as potentially find a study group for a course or project.`
 - **Secondary user (optional):** `<for example, an admin>`
 
 ## 2. Problem
