@@ -1,4 +1,4 @@
-# Product Requirements Document (PRD): `<product name>`
+# Product Requirements Document (PRD): `StudyBuddy`
 
 [Back to the Project 03 guide](README.md)
 
@@ -7,7 +7,7 @@
 > After the presentation, change it only through pull requests, so the history shows what changed and why.
 > Your Final Submission is graded against this document.
 
-**Team:** `<team name>` · **Repo:** `<link>` · **Last updated:** `<date>`
+**Team:** `Group 4` · **Repo:** `https://github.com/438-p03-g4/studybuddy-app` · **Last updated:** `11/2/26`
 
 ---
 
