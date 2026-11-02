@@ -1,12 +1,13 @@
 # Product Requirements Document: StudyBuddy
 
-**Team:** Group 4 — Linus Schaub, Victor Borba, Braeden Migay, Chase Miranda  
-**Repo:** https://github.com/438-p03-g4/studybudy-backend  
-**Last updated:** November 2, 2026
+**Team:** `Group 4 — Linus Schaub, Victor Borba, Braeden Migay, Chase Miranda`  
+**Repo:** `https://github.com/orgs/438-p03-g4/repositories`  
+**Last updated:** `11/02/2026`
 
 ## 1. Users
 
 **Primary user:** A college student studying for a specific course who struggles to stay focused and find classmates to study with. They want to organize personal study time, track completed sessions, and join course-specific study groups.
+**Alternative user:** An instructor can create study groups for their courses for students to access community notes and resources.
 
 ## 2. Problem
 
