@@ -33,9 +33,9 @@ check it.
 
 | # | Measure | Target | How we check it |
 |---|---|---|---|
-| S1 | `<e.g., a new user creates their first study session>` | `<under 2 minutes>` | `<timed during the onboarding test>` |
-| S2 | | | |
-| S3 | | | |
+| S1 | `a new user can set a study goal and start a timer` | `under 1 minute` | `timed during the onboarding test` |
+| S2 | `a user can find their completed session and its duration in their study history` | `under 1 minute` | `timed during the onboarding test` |
+| S3 | `a new user can create or find and join a course study group` | `under 2 minutes` | `timed during the onboarding test` |
 
 ## 4. Scope: MVP, vertical slice, and not building
 
