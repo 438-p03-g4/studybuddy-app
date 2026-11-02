@@ -7,7 +7,7 @@
 > After the presentation, change it only through pull requests, so the history shows what changed and why.
 > Your Final Submission is graded against this document.
 
-**Team:** `Group 4` · **Repo:** `https://github.com/orgs/438-p03-g4/repositories` · **Last updated:** `11/2/26`
+**Team:** `Group 4` · **Repo:** `https://github.com/438-p03-g4/studybuddy-app` · **Last updated:** `11/2/26`
 
 ---
 
@@ -24,7 +24,7 @@ one specific course" is.
 
 Two sentences: what the user struggles with today, and why existing options fall short.
 
-`<problem statement>`
+`Students can find it hard to stay focused while many distractions interrupt their study time. Students might struggle to find classmates who want to study for the same course.`
 
 ## 3. Success measures
 
