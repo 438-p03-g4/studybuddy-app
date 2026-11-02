@@ -1,68 +1,50 @@
-# Product Requirements Document (PRD): `StudyBuddy`
+# Product Requirements Document: StudyBuddy
 
-[Back to the Project 03 guide](README.md)
-
-> Copy this file to `docs/prd.md` in your team repo and replace everything in angle brackets.
-> Keep it to **one page**. Commit it **before the group proposal presentation**; the commit date is checked.
-> After the presentation, change it only through pull requests, so the history shows what changed and why.
-> Your Final Submission is graded against this document.
-
-**Team:** `Group 4` · **Repo:** `https://github.com/438-p03-g4/studybuddy-app` · **Last updated:** `11/2/26`
-
----
+**Team:** Group 4 — Linus Schaub, Victor Borba, Braeden Migay, Chase Miranda  
+**Repo:** https://github.com/438-p03-g4/studybudy-backend  
+**Last updated:** November 2, 2026
 
 ## 1. Users
 
-Who is this for? Name **one** primary user type and describe them in one or two sentences.
-"Everyone" and "students" are not user types; "a first-year student looking for a study group for
-one specific course" is.
-
-- **Primary user:** `A student looking to focus on studying/working on assignments without distractions, as well as potentially find a study group for a course or project.`
-- **Secondary user (optional):** `<for example, an admin>`
+**Primary user:** A college student studying for a specific course who struggles to stay focused and find classmates to study with. They want to organize personal study time, track completed sessions, and join course-specific study groups.
 
 ## 2. Problem
 
-Two sentences: what the user struggles with today, and why existing options fall short.
-
-`Students can find it hard to stay focused while many distractions interrupt their study time. Students might struggle to find classmates who want to study for the same course.`
+Students struggle to maintain focused study routines and find classmates studying the same course. Separate timers and general group chats leave study progress and course-specific group discovery disconnected.
 
 ## 3. Success measures
 
-Three measurable signals that would show the product works. Each one needs a number and a way to
-check it.
+All five test participants must complete each task without assistance. Tests use a one-minute study session and an existing group for a specified course.
 
-| # | Measure | Target | How we check it |
+| ID | Measure | Target | How we check it |
 |---|---|---|---|
-| S1 | `a new user can set a study goal and start a timer` | `under 1 minute` | `timed during the onboarding test` |
-| S2 | `a user can find their completed session and its duration in their study history` | `under 1 minute` | `timed during the onboarding test` |
-| S3 | `a new user can create or find and join a course study group` | `under 2 minutes` | `timed during the onboarding test` |
+| S1 | Start studying | Start a timer within 1 minute after signing in. | Time each participant. |
+| S2 | Control and track a session | Pause and resume the timer, complete the session, and find its saved duration within 30 seconds of completion. | Observe the timer and compare the history entry with the selected duration. |
+| S3 | Find classmates | Find and join a group for a specified course within 2 minutes after signing in. | Time the task and verify membership under “My Groups.” |
 
 ## 4. Scope: MVP, vertical slice, and not building
 
-**MVP** is the smallest set of stories that makes *this* product useful. It always includes the
-account baseline (sign in with GitHub and Google, update profile, delete account) **plus** the
-stories specific to your product.
+**MVP stories:** PRD-1–PRD-8 below. Timer and study-group features have equal product priority. All MVP features are available on web and Android.
 
-- **MVP stories:** `<PRD-1, PRD-2, ...>` (listed in section 5)
-- **Vertical slice:** `<the one MVP story you will polish end to end and test with Playwright>`
-- **Not building (this term):** `<at least three things a reader might expect that you are deliberately leaving out>`
+**First vertical slice — PRD-7:** Find an existing study group by course and join it. Membership must persist and appear under “My Groups.” This flow will be implemented end to end on both platforms and tested with Playwright on web.
+
+**Not building this term:** Chat or video calls; shared live timers; calendar integration or automatic scheduling; blocking other apps or websites; timer continuity after closing the app.
 
 ## 5. User stories and acceptance criteria
 
-One row per MVP story. Each GitHub issue links to its story ID (`PRD-3`) and each story has at
-least one acceptance criterion in **Given / When / Then** form that someone outside the team could
-test.
-
-| ID | Story | Acceptance criteria |
+| ID | User story | Acceptance criteria |
 |---|---|---|
-| PRD-1 | As a `<user>`, I want to `<action>` so that `<benefit>`. | **Given** `<state>`, **when** `<action>`, **then** `<observable result>`. |
-| PRD-2 | | |
-| PRD-3 | | |
-
----
+| PRD-1 | As a student, I want to sign in with Google or GitHub so that I can access my account. | **Given** I am signed out, **when** I successfully authenticate with either supported provider, **then** I reach my signed-in home screen. Test separately with Google and GitHub. |
+| PRD-2 | As a student, I want to edit my display name so that my profile identifies me. | **Given** I am signed in, **when** I save a new display name, **then** my profile shows it after reopening the app. |
+| PRD-3 | As a student, I want to delete my account so that my data is removed. | **Given** I am signed in, **when** I confirm account deletion, **then** I am signed out and my profile, sessions, memberships, and groups I created are deleted; other users’ accounts and sessions remain. |
+| PRD-4 | As a student, I want to choose a study duration and start, pause, resume, or cancel my timer so that I control my study time. | **Given** I select a duration, including 1 minute, **when** I start, pause, and resume, **then** the countdown runs, freezes while paused, and continues from the remaining time. **Given** an unfinished session, **when** I cancel it, **then** it stops without a completed history entry. |
+| PRD-5 | As a student, I want completed sessions saved so that I can review my progress. | **Given** my timer reaches zero, **when** I open my history, **then** exactly one entry shows the completion date and selected study duration, excluding paused time, and remains after reopening the app. Only my sessions appear. |
+| PRD-6 | As a student, I want to create a course-specific group so that classmates can find it. | **Given** I am signed in, **when** I submit a group name and course name, **then** the group appears in course search and I am its first member. Missing names prevent creation and show a validation message. |
+| PRD-7 | As a student, I want to find and join a group for my course so that I can connect with classmates. | **Given** a matching group exists and I am not a member, **when** I search its course and select “Join,” **then** it appears under “My Groups” after reopening the app, and I cannot join twice. A search without matches shows “No groups found.” |
+| PRD-8 | As a student, I want to leave a group so that I control my memberships. | **Given** I belong to a group, **when** I select “Leave,” **then** it disappears from “My Groups” and remains absent after reopening the app. Other members retain their memberships. |
 
 ### Change log
 
 | Date | PR | What changed and why |
 |---|---|---|
-| `<date>` | `#<n>` | Initial version |
+| 2026-11-02 | — | Initial draft defining the agreed MVP and first vertical slice. |
