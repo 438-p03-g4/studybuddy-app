@@ -43,12 +43,13 @@ import androidx.compose.ui.unit.sp
 import com.example.studybuddy_android.ui.theme.StudyBuddyandroidTheme
 
 // Accent color: #f46524.
-private val StudyBuddyAccent = Color(0xFFF46524)
-private val PageWhite = Color(0xFFFFFFFF)
-private val TextDark = Color(0xFF242424)
-private val PageDark = Color(0xFF202024)
-private val TextLight = Color(0xFFBBBBBB)
-private val MutedText = Color(0xFF777777)
+private val StudyBuddyAccent = Color(0xFFF46524) //for light mode accent
+private val PageWhite = Color(0xFFFFFFFF) //for light mode background
+private val TextDark = Color(0xFF242424) //for light mode text
+private val StudyBuddyAccentDark = Color(0xFF5D13CC) //for dark mode accent
+private val PageDark = Color(0xFF202024) //for dark mode background
+private val TextLight = Color(0xFFBBBBBB) //for dark mode text
+private val MutedText = Color(0xFF777777) //all-around muted text
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
