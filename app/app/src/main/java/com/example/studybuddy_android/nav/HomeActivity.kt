@@ -107,7 +107,6 @@ private fun StudyBuddyHomePage() {
                 ) {
                     UserAvatar()
                     Text(
-                        text = "<username>",
                         color = TextDark,
                         fontSize = 15.sp,
                         fontWeight = FontWeight.Medium
