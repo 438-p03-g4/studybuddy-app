@@ -106,11 +106,6 @@ private fun StudyBuddyHomePage() {
                     horizontalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
                     UserAvatar()
-                    Text(
-                        color = TextDark,
-                        fontSize = 15.sp,
-                        fontWeight = FontWeight.Medium
-                    )
                 }
             }
 
