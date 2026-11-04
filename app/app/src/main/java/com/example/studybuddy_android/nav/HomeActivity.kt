@@ -46,6 +46,8 @@ import com.example.studybuddy_android.ui.theme.StudyBuddyandroidTheme
 private val StudyBuddyAccent = Color(0xFFF46524)
 private val PageWhite = Color(0xFFFFFFFF)
 private val TextDark = Color(0xFF242424)
+private val PageDark = Color(0xFF202024)
+private val TextLight = Color(0xFFBBBBBB)
 private val MutedText = Color(0xFF777777)
 
 class MainActivity : ComponentActivity() {
