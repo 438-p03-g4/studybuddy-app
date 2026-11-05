@@ -31,3 +31,6 @@ Everyone on the team adds their name and GitHub username in the PR that commits 
 | Name | GitHub |
 |---|---|
 | Chase Miranda | lowpolysurf |
+| Linus Schaub | lschaubcsumb |
+| Victor Borba | Levrau |
+| Braeden Migay | bmigay |
