@@ -23,6 +23,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".todo.CreateTodoActivity"
+            android:exported="false"
+            android:label="@string/create_todo_title"
+            android:theme="@style/Theme.StudyBuddyandroid"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>
