@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">StudyBuddy-android</string>
+    <string name="todo_heading">My Todos</string>
+    <string name="todo_title">Title (required)</string>
+    <string name="todo_tag">Tag (optional)</string>
+    <string name="todo_tag_example">e.g. CST 438</string>
+    <string name="todo_create">Create Todo</string>
+    <string name="todo_empty">No todos yet. Tap \"+ Add Todo\" to create one.</string>
+    <string name="add_todo_button">+ Add Todo</string>
+    <string name="create_todo_title">Create New Todo</string>
+    <string name="back_button">Back</string>
 </resources>
