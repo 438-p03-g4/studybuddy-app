@@ -23,13 +23,26 @@ Open the URL printed by Expo, normally http://localhost:8081. Stop with Ctrl+C.
 Expected current behavior: home screen, menu, local Todo creation and storage.
 Account actions, study-group navigation and provider login are not complete.
 
+## Web implementation notes
+
+The app is a shared Expo/React Native client. The files under `app/` are the
+canonical routes for Android and web; do not replace them with the starter
+screens from `studybuddy-website`. Web-specific UI can be added with Expo's
+platform file convention, for example `component.web.tsx`, while shared
+screens should continue using React Native primitives.
+
+The shared screens use `ResponsivePage` to cap the content width in a browser
+while remaining full-width on mobile. Before deployment, verify both the
+development server and the static export, then configure the host to serve
+the generated web routes and the backend to allow the deployed origin.
+
 ## Checks
 
 In another terminal in the repository root:
 
 ```powershell
 npm run typecheck
-npx --no-install expo export --platform web
+npm run web:export
 ```
 
 These are type/build checks, not a client unit or e2e test suite. There is no
@@ -39,7 +52,7 @@ These are type/build checks, not a client unit or e2e test suite. There is no
 
 The backend lives in [studybudy-backend](https://github.com/438-p03-g4/studybudy-backend).
 Use its README and `docs/runbook.md` for the Docker API/database setup
-and the backend test suite. 
+and the backend test suite.
 
 The current client has no completed OAuth/API group-search integration. Do not
 treat the appearance of menu labels as a completed feature.

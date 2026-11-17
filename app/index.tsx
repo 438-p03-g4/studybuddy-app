@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { colors, spacing } from '@/constants/theme';
 import { StudyBuddyLogoMark, UserAvatar } from '@/components/StudyBuddyLogoMark';
+import { ResponsivePage } from '@/components/ResponsivePage';
 import { TodoListItem } from '@/components/TodoListItem';
 import { loadTodos } from '@/storage/todoStore';
 import type { TodoItem } from '@/types/todo';
@@ -38,7 +39,7 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <View style={styles.page}>
+      <ResponsivePage style={styles.page}>
         <View style={styles.header}>
           <View style={styles.brandRow}>
             <StudyBuddyLogoMark />
@@ -98,7 +99,7 @@ export default function HomeScreen() {
             <Text style={styles.noTimers}>No Active Timers</Text>
           </View>
         </ScrollView>
-      </View>
+      </ResponsivePage>
 
       <Modal
         visible={menuVisible}
