@@ -117,15 +117,29 @@ export default function CreateGroupScreen() {
 
           {errorMessage ? <Text style={styles.errorMessage}>{errorMessage}</Text> : null}
 
-          <Pressable
-            onPress={() => void handleCreateGroup()}
-            disabled={isSubmitting}
-            style={[styles.openButton, isSubmitting && styles.disabledButton]}
-            accessibilityRole="button"
-            accessibilityLabel="Open Group"
-          >
-            <Text style={styles.openButtonText}>{isSubmitting ? 'Opening...' : 'Open Group'}</Text>
-          </Pressable>
+          <View style={styles.buttonRow}>
+            <Pressable
+              onPress={() => {
+                resetForm();
+                router.replace('/find-study-groups');
+              }}
+              disabled={isSubmitting}
+              style={[styles.cancelButton, isSubmitting && styles.disabledButton]}
+              accessibilityRole="button"
+              accessibilityLabel="Cancel group creation"
+            >
+              <Text style={styles.cancelButtonText}>Cancel</Text>
+            </Pressable>
+            <Pressable
+              onPress={() => void handleCreateGroup()}
+              disabled={isSubmitting}
+              style={[styles.openButton, isSubmitting && styles.disabledButton]}
+              accessibilityRole="button"
+              accessibilityLabel="Open Group"
+            >
+              <Text style={styles.openButtonText}>{isSubmitting ? 'Opening...' : 'Open Group'}</Text>
+            </Pressable>
+          </View>
         </ScrollView>
       </KeyboardAvoidingView>
     </AppShell>
@@ -163,6 +177,24 @@ const styles = StyleSheet.create({
   errorMessage: {
     color: '#B42318',
     fontSize: 15,
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  cancelButton: {
+    alignSelf: 'flex-start',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: colors.accent,
+    paddingHorizontal: 16,
+    paddingVertical: 11,
+  },
+  cancelButtonText: {
+    color: colors.accent,
+    fontSize: 15,
+    fontWeight: '600',
   },
   openButton: {
     alignSelf: 'flex-start',
