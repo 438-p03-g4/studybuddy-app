@@ -30,10 +30,13 @@ In another terminal in the repository root:
 ```powershell
 npm run typecheck
 npx --no-install expo export --platform web
+npx playwright install chromium
+npm run test:e2e
 ```
 
-These are type/build checks, not a client unit or e2e test suite. There is no
-`npm test` script on the audited main commit.
+The Playwright tests serve the exported web client and mock the group API so
+they can verify navigation, searching, form reset, and the group-creation POST
+without requiring OAuth credentials or a running backend.
 
 ## API and local stack
 
