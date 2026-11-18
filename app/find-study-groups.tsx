@@ -1,11 +1,14 @@
+import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
+  Pressable,
   ScrollView,
   StyleSheet,
   Text,
   TextInput,
   View,
+  useWindowDimensions,
 } from 'react-native';
 import { fetchStudyGroups } from '@/api/studyGroups';
 import { AppShell } from '@/components/AppShell';
@@ -13,6 +16,9 @@ import { colors, spacing } from '@/constants/theme';
 import type { StudyGroup } from '@/types/studyGroup';
 
 export default function FindStudyGroupsScreen() {
+  const router = useRouter();
+  const { width } = useWindowDimensions();
+  const isDesktop = width >= 700;
   const [query, setQuery] = useState('');
   const [groups, setGroups] = useState<StudyGroup[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -46,16 +52,26 @@ export default function FindStudyGroupsScreen() {
     <AppShell>
       <View style={styles.pageContent}>
         <Text style={styles.sectionHeading}>Find Study Groups</Text>
-        <TextInput
-          value={query}
-          onChangeText={setQuery}
-          placeholder="Search by group name or course"
-          placeholderTextColor={colors.mutedText}
-          style={styles.searchInput}
-          autoCapitalize="none"
-          autoCorrect={false}
-          accessibilityLabel="Search study groups"
-        />
+        <View style={[styles.searchRow, isDesktop && styles.searchRowDesktop]}>
+          <TextInput
+            value={query}
+            onChangeText={setQuery}
+            placeholder="Search by group name or course"
+            placeholderTextColor={colors.mutedText}
+            style={[styles.searchInput, isDesktop && styles.searchInputDesktop]}
+            autoCapitalize="none"
+            autoCorrect={false}
+            accessibilityLabel="Search study groups"
+          />
+          <Pressable
+            onPress={() => router.push('/create-group')}
+            style={styles.createButton}
+            accessibilityRole="button"
+            accessibilityLabel="Create Group"
+          >
+            <Text style={styles.createButtonText}>Create Group</Text>
+          </Pressable>
+        </View>
 
         {isLoading ? (
           <ActivityIndicator color={colors.accent} style={styles.loading} />
@@ -95,6 +111,14 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '700',
   },
+  searchRow: {
+    width: '100%',
+    gap: 10,
+  },
+  searchRowDesktop: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   searchInput: {
     width: '100%',
     borderWidth: 1,
@@ -104,6 +128,21 @@ const styles = StyleSheet.create({
     fontSize: 16,
     paddingHorizontal: 12,
     paddingVertical: 12,
+  },
+  searchInputDesktop: {
+    flex: 1,
+  },
+  createButton: {
+    alignSelf: 'flex-start',
+    borderRadius: 8,
+    backgroundColor: colors.accent,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+  },
+  createButtonText: {
+    color: colors.pageWhite,
+    fontSize: 15,
+    fontWeight: '600',
   },
   loading: {
     paddingVertical: 18,
