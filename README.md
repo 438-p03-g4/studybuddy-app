@@ -20,8 +20,8 @@ npm run web
 ```
 
 Open the URL printed by Expo, normally http://localhost:8081. Stop with Ctrl+C.
-Expected current behavior: home screen, menu, local Todo creation and storage.
-Account actions, study-group navigation and provider login are not complete.
+Expected current behavior: home screen, menu, local Todo creation and storage,
+study-group pages, and group discovery through the authenticated API.
 
 ## Checks
 
@@ -30,10 +30,13 @@ In another terminal in the repository root:
 ```powershell
 npm run typecheck
 npx --no-install expo export --platform web
+npx playwright install chromium
+npm run test:e2e
 ```
 
-These are type/build checks, not a client unit or e2e test suite. There is no
-`npm test` script on the audited main commit.
+The Playwright tests serve the exported web client and mock the group API so
+they can verify navigation, searching, form reset, and the group-creation POST
+without requiring OAuth credentials or a running backend.
 
 ## API and local stack
 
@@ -41,8 +44,11 @@ The backend lives in [studybudy-backend](https://github.com/438-p03-g4/studybudy
 Use its README and `docs/runbook.md` for the Docker API/database setup
 and the backend test suite. 
 
-The current client has no completed OAuth/API group-search integration. Do not
-treat the appearance of menu labels as a completed feature.
+The group-search page calls `GET /groups` through the `EXPO_PUBLIC_API_URL`
+environment variable. If it is not set, web uses `http://localhost:8080` and
+the Android emulator uses `http://10.0.2.2:8080`. The endpoint requires an
+authenticated StudyBuddy session, so OAuth must be configured before protected
+group results can load.
 
 ## Onboarding issues
 
