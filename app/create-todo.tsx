@@ -11,6 +11,7 @@ import {
   View,
 } from 'react-native';
 import { colors } from '@/constants/theme';
+import { ResponsivePage } from '@/components/ResponsivePage';
 import { createTodo, loadTodos, saveTodos } from '@/storage/todoStore';
 
 export default function CreateTodoScreen() {
@@ -35,49 +36,51 @@ export default function CreateTodoScreen() {
         style={styles.page}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       >
-        <View style={styles.header}>
-          <Pressable
-            onPress={() => router.back()}
-            style={styles.backButton}
-            accessibilityRole="button"
-            accessibilityLabel="Back"
-          >
-            <Text style={styles.backArrow}>←</Text>
-            <Text style={styles.headerText}>Back</Text>
-          </Pressable>
-          <Text style={styles.headerTitle}>Create New Todo</Text>
-        </View>
+        <ResponsivePage>
+          <View style={styles.header}>
+            <Pressable
+              onPress={() => router.back()}
+              style={styles.backButton}
+              accessibilityRole="button"
+              accessibilityLabel="Back"
+            >
+              <Text style={styles.backArrow}>←</Text>
+              <Text style={styles.headerText}>Back</Text>
+            </Pressable>
+            <Text style={styles.headerTitle}>Create New Todo</Text>
+          </View>
 
-        <View style={styles.form}>
-          <Text style={styles.heading}>My Todos</Text>
-          <TextInput
-            value={title}
-            onChangeText={setTitle}
-            placeholder="Title (required)"
-            placeholderTextColor={colors.mutedText}
-            style={styles.input}
-            returnKeyType="next"
-            accessibilityLabel="Title (required)"
-          />
-          <TextInput
-            value={tag}
-            onChangeText={setTag}
-            placeholder="Tag (optional)"
-            placeholderTextColor={colors.mutedText}
-            style={styles.input}
-            returnKeyType="done"
-            accessibilityLabel="Tag (optional)"
-          />
-          <Pressable
-            onPress={() => void handleCreate()}
-            disabled={title.trim().length === 0}
-            style={[styles.createButton, title.trim().length === 0 && styles.disabledButton]}
-            accessibilityRole="button"
-            accessibilityLabel="Create Todo"
-          >
-            <Text style={styles.createButtonText}>Create Todo</Text>
-          </Pressable>
-        </View>
+          <View style={styles.form}>
+            <Text style={styles.heading}>My Todos</Text>
+            <TextInput
+              value={title}
+              onChangeText={setTitle}
+              placeholder="Title (required)"
+              placeholderTextColor={colors.mutedText}
+              style={styles.input}
+              returnKeyType="next"
+              accessibilityLabel="Title (required)"
+            />
+            <TextInput
+              value={tag}
+              onChangeText={setTag}
+              placeholder="Tag (optional)"
+              placeholderTextColor={colors.mutedText}
+              style={styles.input}
+              returnKeyType="done"
+              accessibilityLabel="Tag (optional)"
+            />
+            <Pressable
+              onPress={() => void handleCreate()}
+              disabled={title.trim().length === 0}
+              style={[styles.createButton, title.trim().length === 0 && styles.disabledButton]}
+              accessibilityRole="button"
+              accessibilityLabel="Create Todo"
+            >
+              <Text style={styles.createButtonText}>Create Todo</Text>
+            </Pressable>
+          </View>
+        </ResponsivePage>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
