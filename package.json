@@ -7,8 +7,8 @@
     "start": "expo start",
     "android": "expo run:android",
     "web": "expo start --web",
-    "web:export": "expo export --platform web",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@expo/metro-runtime": "~58.0.16",
@@ -30,6 +30,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.28.0",
+    "@playwright/test": "^1.65.1",
     "typescript": "~6.0.3"
   }
 }
