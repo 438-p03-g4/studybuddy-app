@@ -1,67 +1,57 @@
 # StudyBuddy app
 
-This repository is now an Expo React Native application that targets Android and the web through React Native Web. The original Kotlin/Gradle project is retained locally in `android-legacy/` for reference and is excluded from source control.
+Expo / React Native application for web and Android. This repository contains the StudyBuddy client.
 
-## Run the app
+## Prerequisites
 
-From the repository root:
+Git, Node.js 22.13.0 (the version used in current CI), npm, and Internet access
+for dependency installation. Start with web; Android requires a configured
+emulator/device and is not a replacement for the local API onboarding check.
 
-```bash
-npm install
-npm start
-```
+## Fresh clone and web startup
 
-Then choose a target from the Expo terminal, or use one of these commands:
-
-```bash
-npm run android
+```powershell
+git clone https://github.com/438-p03-g4/studybuddy-app.git
+cd studybuddy-app
+git switch main
+git rev-parse HEAD
+npm ci
 npm run web
 ```
 
-The project can also be checked without launching a device:
+Open the URL printed by Expo, normally http://localhost:8081. Stop with Ctrl+C.
+Expected current behavior: home screen, menu, local Todo creation and storage,
+study-group pages, and group discovery through the authenticated API.
 
-```bash
+## Checks
+
+In another terminal in the repository root:
+
+```powershell
 npm run typecheck
+npx --no-install expo export --platform web
+npx playwright install chromium
+npm run test:e2e
 ```
 
-## Current functionality
+The Playwright tests serve the exported web client and mock the group API so
+they can verify navigation, searching, form reset, and the group-creation POST
+without requiring OAuth credentials or a running backend.
 
-- Home screen matching the existing StudyBuddy layout.
-- Menu popup with the existing menu labels.
-- Local todo creation and persistence using AsyncStorage.
-- Android and web-compatible Expo Router navigation.
-- OAuth provider configuration prepared for Google and GitHub, but no sign-in request is made yet because the backend authentication endpoints are not implemented.
+## API and local stack
 
+The backend lives in [studybudy-backend](https://github.com/438-p03-g4/studybudy-backend).
+Use its README and `docs/runbook.md` for the Docker API/database setup
+and the backend test suite. 
 
-# StudyBuddy backend
+The group-search page calls `GET /groups` through the `EXPO_PUBLIC_API_URL`
+environment variable. If it is not set, web uses `http://localhost:8080` and
+the Android emulator uses `http://10.0.2.2:8080`. The endpoint requires an
+authenticated StudyBuddy session, so OAuth must be configured before protected
+group results can load.
 
-Java and Spring Boot backend. PostgreSQL is provided by Neon.
+## Onboarding issues
 
-## Connect to Neon
-
-1. Create or select a Neon project and database.
-2. In Neon, open **Connect** and copy the connection details. Use the pooled connection host for serverless deployments if your deployment platform starts many short-lived instances.
-3. Configure these environment variables in your local shell or deployment platform:
-
-   - `DATABASE_URL`: JDBC URL in the form `jdbc:postgresql://<host>/<database>?sslmode=require&channel_binding=require`
-   - `DATABASE_USERNAME`: Neon role name
-   - `DATABASE_PASSWORD`: Neon role password
-
-   Convert the `postgresql://` prefix in a Neon URI to `jdbc:postgresql://`. Keep the host, database, and query parameters from Neon. Do not commit real credentials. Add the three values as deployment secrets in the hosting platform.
-
-4. Run the service with `./gradlew bootRun`.
-
-During development, Hibernate updates the Neon schema from the JPA entities (`ddl-auto: update`). For production, manage schema changes with versioned SQL migrations rather than automatic schema updates.
-
-## Deploy on Render
-
-Create a **Web Service** for this repository and choose **Docker** as the runtime
-Keep the Dockerfile path as `./Dockerfile`; the container listens on Render's `PORT` environment variable (10000 by default).
-
-Set these environment variables in the Render service settings using the Neon connection details:
-
-- `DATABASE_URL`: `jdbc:postgresql://<neon-host>/<database>?sslmode=require&channel_binding=require`
-- `DATABASE_USERNAME`: Neon role name
-- `DATABASE_PASSWORD`: Neon role password
-
-Don't commit or put the database credentials on dockerfile
+File client blockers here with label `onboarding`, one issue per problem. Include
+the README step, exact command and text output, expected result, OS and Docker
+versions. If the complete attempt succeeds, file one clean-run issue instead.
