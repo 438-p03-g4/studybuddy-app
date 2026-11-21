@@ -5,6 +5,23 @@ const randomGroups = [
   { id: 2, name: 'Mobile Developers', course: 'CST499' },
 ];
 
+// The app waits for the current-user request before rendering protected pages.
+// Keep these UI tests focused on group management by supplying an authenticated
+// test user instead of depending on a running auth service.
+test.beforeEach(async ({ page }) => {
+  await page.route('**/api/auth/me', async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        id: 1,
+        email: 'e2e@example.com',
+        displayName: 'E2E User',
+      }),
+    });
+  });
+});
+
 test('opens My Study Groups and shows the empty state', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('button', { name: 'Open menu' }).click();

@@ -1,11 +1,5 @@
-import { Platform } from 'react-native';
+import { API_BASE_URL } from '@/api/config';
 import type { StudyGroup } from '@/types/studyGroup';
-
-const defaultApiBaseUrl = Platform.OS === 'android'
-  ? 'http://10.0.2.2:8080'
-  : 'http://localhost:8080';
-
-const API_BASE_URL = (process.env.EXPO_PUBLIC_API_URL ?? defaultApiBaseUrl).replace(/\/$/, '');
 
 type StudyGroupResponse = {
   id: number | string;

@@ -44,6 +44,14 @@ The backend lives in [studybudy-backend](https://github.com/438-p03-g4/studybudy
 Use its README and `docs/runbook.md` for the Docker API/database setup
 and the backend test suite. 
 
+For local web OAuth, the frontend uses `http://localhost:8080` by default and
+Expo normally serves the app at `http://localhost:8081`. The backend defaults
+`FRONTEND_ORIGIN` to `http://localhost:8081` and
+`FRONTEND_SUCCESS_URL` to `http://localhost:8081/login/success`. OAuth provider
+callback URLs should point to the backend, such as
+`http://localhost:8080/login/oauth2/code/google` and
+`http://localhost:8080/login/oauth2/code/github`.
+
 The group-search page calls `GET /groups` through the `EXPO_PUBLIC_API_URL`
 environment variable. If it is not set, web uses `http://localhost:8080` and
 the Android emulator uses `http://10.0.2.2:8080`. The endpoint requires an

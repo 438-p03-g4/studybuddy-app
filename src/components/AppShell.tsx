@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { useState } from 'react';
 import { Modal, Pressable, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { StudyBuddyLogoMark, UserAvatar } from '@/components/StudyBuddyLogoMark';
+import { useCurrentUser } from '@/auth/AuthContext';
 import { colors, spacing } from '@/constants/theme';
 
 const MENU_ITEMS = ['Home', 'My Study Groups', 'Find Study Groups', 'Create Study Timer'];
@@ -13,6 +14,7 @@ type AppShellProps = {
 
 export function AppShell({ children }: AppShellProps) {
   const router = useRouter();
+  const user = useCurrentUser();
   const [menuVisible, setMenuVisible] = useState(false);
 
   const handleMenuItemPress = (item: string) => {
@@ -48,7 +50,7 @@ export function AppShell({ children }: AppShellProps) {
             accessibilityLabel="Open account settings"
           >
             <UserAvatar />
-            <Text style={styles.username}>{'<username>'}</Text>
+            <Text style={styles.username}>{user?.displayName || user?.email || 'StudyBuddy User'}</Text>
           </Pressable>
         </View>
 
