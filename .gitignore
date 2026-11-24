@@ -6,6 +6,8 @@ playwright-report/
 test-results/
 *.log
 .DS_Store
+.env
+.env.local
 
 # Keep local tooling state out of source control.
 .idea/

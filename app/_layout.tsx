@@ -1,11 +1,12 @@
 import { Redirect, Stack, usePathname, type Href } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
 import { AuthContextProvider } from '@/auth/AuthContext';
 import { fetchCurrentUser } from '@/auth/client';
 import type { UserProfile } from '@/auth/client';
 import { colors } from '@/constants/theme';
+import { DEV_AUTH_BYPASS_ENABLED, DEV_AUTH_USER } from '@/auth/devBypass';
 
 export default function RootLayout() {
   const pathname = usePathname();
@@ -17,6 +18,15 @@ export default function RootLayout() {
 
   useEffect(() => {
     let active = true;
+
+    if (DEV_AUTH_BYPASS_ENABLED) {
+      setCurrentUser(DEV_AUTH_USER);
+      setAuthState('signed-in');
+      return () => {
+        active = false;
+      };
+    }
+
     fetchCurrentUser()
       .then((user) => {
         if (!active) return;
@@ -50,6 +60,19 @@ export default function RootLayout() {
         <Text style={styles.heading}>Can’t connect to StudyBuddy</Text>
         <Text style={styles.message}>{errorMessage}</Text>
         <Text style={styles.message}>Make sure the backend is running at the configured API URL.</Text>
+        {DEV_AUTH_BYPASS_ENABLED ? (
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Dev bypass"
+            onPress={() => {
+              setCurrentUser(DEV_AUTH_USER);
+              setAuthState('signed-in');
+            }}
+            style={styles.devButton}
+          >
+            <Text style={styles.devButtonText}>Dev bypass</Text>
+          </Pressable>
+        ) : null}
       </View>
     );
   }
@@ -84,4 +107,15 @@ const styles = StyleSheet.create({
   },
   heading: { color: colors.textDark, fontSize: 20, fontWeight: '700', textAlign: 'center' },
   message: { color: colors.mutedText, fontSize: 15, textAlign: 'center' },
+  devButton: {
+    minHeight: 48,
+    borderWidth: 1,
+    borderColor: colors.mutedText,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 16,
+    marginTop: 8,
+  },
+  devButtonText: { color: colors.mutedText, fontSize: 16, fontWeight: '700' },
 });
