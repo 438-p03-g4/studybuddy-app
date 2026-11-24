@@ -1,0 +1,155 @@
+import { useEffect, useState } from 'react';
+import {
+  Modal,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Switch,
+  Text,
+  TextInput,
+  View,
+  useWindowDimensions,
+} from 'react-native';
+import { type ThemeColors } from '@/constants/theme';
+import { useSettings, type AppSettings } from '@/settings/SettingsContext';
+
+type SettingsModalProps = { visible: boolean; onClose: () => void };
+
+export function SettingsModal({ visible, onClose }: SettingsModalProps) {
+  const { settings, colors, saveSettings } = useSettings();
+  const { width, height } = useWindowDimensions();
+  const [tab, setTab] = useState<'app' | 'user'>('app');
+  const [draft, setDraft] = useState<AppSettings>(settings);
+  const [placeholder, setPlaceholder] = useState<string | null>(null);
+  const isDesktop = width >= 700;
+
+  useEffect(() => {
+    if (visible) setDraft(settings);
+  }, [settings, visible]);
+
+  const update = <K extends keyof AppSettings>(key: K, value: AppSettings[K]) => {
+    setDraft((current) => ({ ...current, [key]: value }));
+  };
+
+  const closeWithSave = () => {
+    saveSettings(draft);
+    onClose();
+  };
+
+  return (
+    <Modal visible={visible} transparent animationType="fade" onRequestClose={closeWithSave}>
+      <View style={styles.backdrop}>
+        <View
+          style={[
+            styles.panel,
+            {
+              backgroundColor: colors.pageWhite,
+              height: isDesktop ? height * 0.75 : height,
+              width: isDesktop ? '75%' : '100%',
+            },
+            isDesktop && styles.desktopPanel,
+          ]}
+        >
+          <View style={[styles.topBar, { borderBottomColor: colors.border }]}>
+            <Text style={[styles.title, { color: colors.textDark }]}>Settings</Text>
+            <Pressable onPress={closeWithSave} accessibilityRole="button" accessibilityLabel="Save settings">
+              <Text style={[styles.saveText, { color: colors.accent }]}>Save</Text>
+            </Pressable>
+          </View>
+
+          <View style={[styles.tabs, { borderBottomColor: colors.border }]}>
+            {(['app', 'user'] as const).map((item) => (
+              <Pressable key={item} onPress={() => setTab(item)} style={[styles.tab, tab === item && { borderBottomColor: colors.accent }]}>
+                <Text style={[styles.tabText, { color: tab === item ? colors.accent : colors.mutedText }]}>
+                  {item === 'app' ? 'App Settings' : 'User Settings'}
+                </Text>
+              </Pressable>
+            ))}
+          </View>
+
+          <ScrollView contentContainerStyle={styles.content}>
+            {tab === 'app' ? (
+              <>
+                <SettingToggle label="Dark mode" value={draft.darkMode} onChange={(value) => update('darkMode', value)} colors={colors} />
+                <SettingToggle label="Secrets" value={draft.secrets} onChange={(value) => update('secrets', value)} colors={colors} />
+                {draft.secrets ? (
+                  <SettingToggle label="Party Mode" value={draft.partyMode} onChange={(value) => update('partyMode', value)} colors={colors} />
+                ) : null}
+              </>
+            ) : (
+              <>
+                <Text style={[styles.label, { color: colors.textDark }]}>Profile picture URL</Text>
+                <TextInput
+                  value={draft.profileImageUri}
+                  onChangeText={(value) => update('profileImageUri', value)}
+                  placeholder="Optional image URL"
+                  placeholderTextColor={colors.mutedText}
+                  autoCapitalize="none"
+                  keyboardType="url"
+                  style={[styles.input, { color: colors.textDark, borderColor: colors.border }]}
+                />
+                <Text style={[styles.label, { color: colors.textDark }]}>Display name</Text>
+                <TextInput
+                  value={draft.displayName}
+                  onChangeText={(value) => update('displayName', value)}
+                  placeholder="Your display name"
+                  placeholderTextColor={colors.mutedText}
+                  style={[styles.input, { color: colors.textDark, borderColor: colors.border }]}
+                />
+                {['Update email', 'Update password', 'Delete account'].map((label) => (
+                  <Pressable key={label} onPress={() => setPlaceholder(label)} style={[styles.action, { borderColor: colors.border }]}>
+                    <Text style={[styles.actionText, { color: label === 'Delete account' ? '#C94A4A' : colors.textDark }]}>{label}</Text>
+                    <Text style={[styles.comingSoon, { color: colors.mutedText }]}>Coming soon</Text>
+                  </Pressable>
+                ))}
+              </>
+            )}
+          </ScrollView>
+        </View>
+      </View>
+
+      <Modal visible={placeholder !== null} transparent animationType="fade" onRequestClose={() => setPlaceholder(null)}>
+        <View style={styles.backdrop}>
+          <View style={[styles.notice, { backgroundColor: colors.pageWhite }]}>
+            <Text style={[styles.title, { color: colors.textDark }]}>{placeholder}</Text>
+            <Text style={[styles.message, { color: colors.mutedText }]}>This setting will be available in a future update.</Text>
+            <Pressable onPress={() => setPlaceholder(null)} style={[styles.action, { borderColor: colors.border }]}>
+              <Text style={[styles.actionText, { color: colors.accent }]}>Close</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
+    </Modal>
+  );
+}
+
+function SettingToggle({ label, value, onChange, colors }: { label: string; value: boolean; onChange: (value: boolean) => void; colors: ThemeColors }) {
+  return (
+    <View style={styles.toggleRow}>
+      <Text style={[styles.settingText, { color: colors.textDark }]}>{label}</Text>
+      <Switch value={value} onValueChange={onChange} trackColor={{ false: colors.border, true: colors.accent }} />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  backdrop: { flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.48)', alignItems: 'center', justifyContent: 'center' },
+  panel: { overflow: 'hidden' },
+  desktopPanel: { borderRadius: 18, maxWidth: 1000 },
+  topBar: { minHeight: 64, paddingHorizontal: 22, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 1 },
+  title: { fontSize: 22, fontWeight: '700' },
+  saveText: { fontSize: 16, fontWeight: '700' },
+  tabs: { flexDirection: 'row', borderBottomWidth: 1 },
+  tab: { flex: 1, alignItems: 'center', paddingVertical: 16, borderBottomWidth: 3, borderBottomColor: 'transparent' },
+  tabText: { fontSize: 15, fontWeight: '600' },
+  content: { padding: 22, gap: 18 },
+  toggleRow: { minHeight: 54, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  settingText: { fontSize: 17 },
+  label: { fontSize: 15, fontWeight: '600', marginBottom: -10 },
+  input: { borderWidth: 1, borderRadius: 8, paddingHorizontal: 12, paddingVertical: 12, fontSize: 16 },
+  action: { minHeight: 52, borderWidth: 1, borderRadius: 8, paddingHorizontal: 14, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  actionText: { fontSize: 16, fontWeight: '600' },
+  comingSoon: { fontSize: 13 },
+  notice: { width: '86%', maxWidth: 420, borderRadius: 14, padding: 22, gap: 18 },
+  message: { fontSize: 15, lineHeight: 22 },
+});

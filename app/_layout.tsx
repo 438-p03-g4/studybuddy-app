@@ -7,6 +7,7 @@ import { fetchCurrentUser } from '@/auth/client';
 import type { UserProfile } from '@/auth/client';
 import { colors } from '@/constants/theme';
 import { DEV_AUTH_BYPASS_ENABLED, DEV_AUTH_USER } from '@/auth/devBypass';
+import { SettingsProvider } from '@/settings/SettingsContext';
 
 export default function RootLayout() {
   const pathname = usePathname();
@@ -84,14 +85,16 @@ export default function RootLayout() {
   return (
     <>
       <StatusBar style="dark" />
-      <AuthContextProvider value={currentUser}>
-        <Stack
-          screenOptions={{
-            headerShown: false,
-            contentStyle: { backgroundColor: '#FFFFFF' },
-          }}
-        />
-      </AuthContextProvider>
+      <SettingsProvider>
+        <AuthContextProvider value={currentUser}>
+          <Stack
+            screenOptions={{
+              headerShown: false,
+              contentStyle: { backgroundColor: '#FFFFFF' },
+            }}
+          />
+        </AuthContextProvider>
+      </SettingsProvider>
     </>
   );
 }

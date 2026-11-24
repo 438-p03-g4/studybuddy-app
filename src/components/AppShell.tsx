@@ -5,6 +5,8 @@ import { Modal, Pressable, SafeAreaView, StyleSheet, Text, View } from 'react-na
 import { StudyBuddyLogoMark, UserAvatar } from '@/components/StudyBuddyLogoMark';
 import { useCurrentUser } from '@/auth/AuthContext';
 import { colors, spacing } from '@/constants/theme';
+import { SettingsModal } from '@/components/SettingsModal';
+import { useSettings } from '@/settings/SettingsContext';
 
 const MENU_ITEMS = ['Home', 'My Study Groups', 'Find Study Groups', 'Create Study Timer'];
 
@@ -15,7 +17,9 @@ type AppShellProps = {
 export function AppShell({ children }: AppShellProps) {
   const router = useRouter();
   const user = useCurrentUser();
+  const { settings, colors: themeColors } = useSettings();
   const [menuVisible, setMenuVisible] = useState(false);
+  const [settingsVisible, setSettingsVisible] = useState(false);
 
   const handleMenuItemPress = (item: string) => {
     setMenuVisible(false);
@@ -30,8 +34,8 @@ export function AppShell({ children }: AppShellProps) {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.page}>
+    <SafeAreaView style={[styles.safeArea, { backgroundColor: themeColors.pageWhite }]}>
+      <View style={[styles.page, { backgroundColor: themeColors.pageWhite }]}>
         <View style={styles.header}>
           <Pressable
             onPress={() => router.push('/')}
@@ -40,21 +44,21 @@ export function AppShell({ children }: AppShellProps) {
             accessibilityLabel="Go to StudyBuddy homepage"
           >
             <StudyBuddyLogoMark />
-            <Text style={styles.brandName}>StudyBuddy</Text>
+            <Text style={[styles.brandName, { color: themeColors.textDark }]}>StudyBuddy</Text>
           </Pressable>
 
           <Pressable
-            onPress={() => undefined}
+            onPress={() => setSettingsVisible(true)}
             style={styles.accountButton}
             accessibilityRole="button"
             accessibilityLabel="Open account settings"
           >
-            <UserAvatar />
-            <Text style={styles.username}>{user?.displayName || user?.email || 'StudyBuddy User'}</Text>
+            <UserAvatar uri={settings.profileImageUri} />
+            <Text style={[styles.username, { color: themeColors.textDark }]}>{settings.displayName || user?.displayName || user?.email || 'StudyBuddy User'}</Text>
           </Pressable>
         </View>
 
-        <View style={styles.accentBar}>
+        <View style={[styles.accentBar, { backgroundColor: themeColors.accent }]}>
           <Pressable
             onPress={() => setMenuVisible(true)}
             style={styles.menuButton}
@@ -62,7 +66,7 @@ export function AppShell({ children }: AppShellProps) {
             accessibilityLabel="Open menu"
           >
             <Text style={styles.menuIcon}>☰</Text>
-            <Text style={styles.menuText}>Menu</Text>
+              <Text style={styles.menuText}>Menu</Text>
           </Pressable>
         </View>
 
@@ -89,6 +93,7 @@ export function AppShell({ children }: AppShellProps) {
           </View>
         </Pressable>
       </Modal>
+      <SettingsModal visible={settingsVisible} onClose={() => setSettingsVisible(false)} />
     </SafeAreaView>
   );
 }

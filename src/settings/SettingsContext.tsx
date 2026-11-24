@@ -1,0 +1,69 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { createContext, type ReactNode, useContext, useEffect, useMemo, useState } from 'react';
+import { getThemeColors, type ThemeColors } from '@/constants/theme';
+
+const SETTINGS_KEY = 'studybuddy.app-settings';
+
+export type AppSettings = {
+  darkMode: boolean;
+  secrets: boolean;
+  partyMode: boolean;
+  profileImageUri: string;
+  displayName: string;
+};
+
+const DEFAULT_SETTINGS: AppSettings = {
+  darkMode: false,
+  secrets: false,
+  partyMode: false,
+  profileImageUri: '',
+  displayName: '',
+};
+
+type SettingsContextValue = {
+  settings: AppSettings;
+  colors: ThemeColors;
+  saveSettings: (settings: AppSettings) => void;
+};
+
+const SettingsContext = createContext<SettingsContextValue | null>(null);
+
+export function SettingsProvider({ children }: { children: ReactNode }) {
+  const [settings, setSettings] = useState(DEFAULT_SETTINGS);
+  const [rainbowHue, setRainbowHue] = useState(0);
+
+  useEffect(() => {
+    void AsyncStorage.getItem(SETTINGS_KEY).then((stored) => {
+      if (!stored) return;
+      try {
+        setSettings({ ...DEFAULT_SETTINGS, ...(JSON.parse(stored) as Partial<AppSettings>) });
+      } catch {
+        // Ignore invalid local settings and keep defaults.
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!settings.partyMode) return;
+    const interval = setInterval(() => setRainbowHue((hue) => (hue + 8) % 360), 80);
+    return () => clearInterval(interval);
+  }, [settings.partyMode]);
+
+  const colors = useMemo(
+    () => getThemeColors(settings.darkMode, settings.partyMode ? `hsl(${rainbowHue}, 85%, 55%)` : ''),
+    [rainbowHue, settings.darkMode, settings.partyMode],
+  );
+
+  const saveSettings = (nextSettings: AppSettings) => {
+    setSettings(nextSettings);
+    void AsyncStorage.setItem(SETTINGS_KEY, JSON.stringify(nextSettings));
+  };
+
+  return <SettingsContext.Provider value={{ settings, colors, saveSettings }}>{children}</SettingsContext.Provider>;
+}
+
+export function useSettings() {
+  const context = useContext(SettingsContext);
+  if (!context) throw new Error('useSettings must be used inside SettingsProvider');
+  return context;
+}
