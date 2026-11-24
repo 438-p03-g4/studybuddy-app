@@ -11,6 +11,7 @@
 | 1 | `Chase (lowpolysurf)` | `Victor (Levrau)` | `v0.1.0` |
 | 2 | `Linus (lschaubcsumb)` | `Chase (lowpolysurf)` | `v0.2.0` |
 | 3 | `Braeden (bmigay)` | `Linus (lschaubcsumb)` | `v0.3.0` |
+| Break | `Chase (lowpolysurf)` | `Victor (Levrau)` | `v0.3.1` |
 | 4 | `Victor (Levrau)` | `Braeden (bmigay)` | `v1.0.0` |
 
 ## Swaps
