@@ -4,7 +4,7 @@ import { colors, spacing } from '@/constants/theme';
 import { useSettings } from '@/settings/SettingsContext';
 
 export default function StudyGroupsScreen() {
-  const { colors: themeColors } = useSettings();
+  const { colors: themeColors, settings } = useSettings();
   return (
     <AppShell>
       <ScrollView
@@ -12,8 +12,8 @@ export default function StudyGroupsScreen() {
         contentContainerStyle={styles.contentContainer}
         showsVerticalScrollIndicator={false}
       >
-        <Text style={[styles.sectionHeading, { color: themeColors.textDark }]}>My Study Groups</Text>
-        <Text style={[styles.emptyState, { color: themeColors.mutedText }]}>No Active Study Groups</Text>
+        <Text style={[styles.sectionHeading, { color: themeColors.textDark, fontSize: 20 * settings.textScale }]}>My Study Groups</Text>
+        <Text style={[styles.emptyState, { color: themeColors.mutedText, fontSize: 16 * settings.textScale }]}>No Active Study Groups</Text>
       </ScrollView>
     </AppShell>
   );

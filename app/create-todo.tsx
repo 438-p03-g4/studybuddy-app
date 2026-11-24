@@ -17,7 +17,7 @@ import { useSettings } from '@/settings/SettingsContext';
 
 export default function CreateTodoScreen() {
   const router = useRouter();
-  const { colors: themeColors } = useSettings();
+  const { colors: themeColors, settings } = useSettings();
   const [title, setTitle] = useState('');
   const [tag, setTag] = useState('');
 
@@ -47,19 +47,19 @@ export default function CreateTodoScreen() {
               accessibilityLabel="Back"
             >
               <Text style={[styles.backArrow, { color: themeColors.pageWhite }]}>←</Text>
-              <Text style={[styles.headerText, { color: themeColors.pageWhite }]}>Back</Text>
+            <Text style={[styles.headerText, { color: themeColors.pageWhite, fontSize: 15 * settings.textScale }]}>Back</Text>
             </Pressable>
-            <Text style={[styles.headerTitle, { color: themeColors.pageWhite }]}>Create New Todo</Text>
+            <Text style={[styles.headerTitle, { color: themeColors.pageWhite, fontSize: 18 * settings.textScale }]}>Create New Todo</Text>
           </View>
 
           <View style={styles.form}>
-            <Text style={[styles.heading, { color: themeColors.textDark }]}>My Todos</Text>
+            <Text style={[styles.heading, { color: themeColors.textDark, fontSize: 20 * settings.textScale }]}>My Todos</Text>
             <TextInput
               value={title}
               onChangeText={setTitle}
               placeholder="Title (required)"
               placeholderTextColor={themeColors.mutedText}
-              style={[styles.input, { borderColor: themeColors.border, color: themeColors.textDark }]}
+              style={[styles.input, { borderColor: themeColors.border, color: themeColors.textDark, fontSize: 16 * settings.textScale }]}
               returnKeyType="next"
               accessibilityLabel="Title (required)"
             />
@@ -68,7 +68,7 @@ export default function CreateTodoScreen() {
               onChangeText={setTag}
               placeholder="Tag (optional)"
               placeholderTextColor={themeColors.mutedText}
-              style={[styles.input, { borderColor: themeColors.border, color: themeColors.textDark }]}
+              style={[styles.input, { borderColor: themeColors.border, color: themeColors.textDark, fontSize: 16 * settings.textScale }]}
               returnKeyType="done"
               accessibilityLabel="Tag (optional)"
             />
@@ -79,7 +79,7 @@ export default function CreateTodoScreen() {
               accessibilityRole="button"
               accessibilityLabel="Create Todo"
             >
-              <Text style={[styles.createButtonText, { color: themeColors.pageWhite }]}>Create Todo</Text>
+              <Text style={[styles.createButtonText, { color: themeColors.pageWhite, fontSize: 15 * settings.textScale }]}>Create Todo</Text>
             </Pressable>
           </View>
         </ResponsivePage>

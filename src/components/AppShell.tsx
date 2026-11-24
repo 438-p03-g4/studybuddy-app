@@ -44,7 +44,7 @@ export function AppShell({ children }: AppShellProps) {
             accessibilityLabel="Go to StudyBuddy homepage"
           >
             <StudyBuddyLogoMark />
-            <Text style={[styles.brandName, { color: themeColors.textDark }]}>StudyBuddy</Text>
+            <Text style={[styles.brandName, { color: themeColors.textDark, fontSize: 22 * settings.textScale }]}>StudyBuddy</Text>
           </Pressable>
 
           <Pressable
@@ -54,7 +54,7 @@ export function AppShell({ children }: AppShellProps) {
             accessibilityLabel="Open account settings"
           >
             <UserAvatar uri={settings.profileImageUri} />
-            <Text style={[styles.username, { color: themeColors.textDark }]}>{settings.displayName || user?.displayName || user?.email || 'StudyBuddy User'}</Text>
+            <Text style={[styles.username, { color: themeColors.textDark, fontSize: 15 * settings.textScale }]}>{settings.displayName || user?.displayName || user?.email || 'StudyBuddy User'}</Text>
           </Pressable>
         </View>
 
@@ -65,8 +65,8 @@ export function AppShell({ children }: AppShellProps) {
             accessibilityRole="button"
             accessibilityLabel="Open menu"
           >
-              <Text style={[styles.menuIcon, { color: themeColors.pageWhite }]}>☰</Text>
-              <Text style={[styles.menuText, { color: themeColors.pageWhite }]}>Menu</Text>
+              <Text style={[styles.menuIcon, { color: themeColors.pageWhite, fontSize: 23 * settings.textScale }]}>☰</Text>
+              <Text style={[styles.menuText, { color: themeColors.pageWhite, fontSize: 15 * settings.textScale }]}>Menu</Text>
           </Pressable>
         </View>
 
@@ -87,7 +87,7 @@ export function AppShell({ children }: AppShellProps) {
                 onPress={() => handleMenuItemPress(item)}
                 style={styles.menuItem}
               >
-                <Text style={[styles.menuItemText, { color: themeColors.textDark }]}>{item}</Text>
+                <Text style={[styles.menuItemText, { color: themeColors.textDark, fontSize: 15 * settings.textScale }]}>{item}</Text>
               </Pressable>
             ))}
           </View>

@@ -17,7 +17,7 @@ import { useSettings } from '@/settings/SettingsContext';
 
 export default function CreateGroupScreen() {
   const router = useRouter();
-  const { colors: themeColors } = useSettings();
+  const { colors: themeColors, settings } = useSettings();
   const [name, setName] = useState('');
   const [iconUrl, setIconUrl] = useState('');
   const [course, setCourse] = useState('');
@@ -78,14 +78,14 @@ export default function CreateGroupScreen() {
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
-          <Text style={[styles.heading, { color: themeColors.textDark }]}>Create Study Group</Text>
+          <Text style={[styles.heading, { color: themeColors.textDark, fontSize: 20 * settings.textScale }]}>Create Study Group</Text>
 
           <TextInput
             value={name}
             onChangeText={setName}
             placeholder="Group name (required)"
             placeholderTextColor={themeColors.mutedText}
-            style={[styles.input, { borderColor: themeColors.border, color: themeColors.textDark }]}
+            style={[styles.input, { borderColor: themeColors.border, color: themeColors.textDark, fontSize: 16 * settings.textScale }]}
             accessibilityLabel="Group name"
           />
           <TextInput
@@ -93,7 +93,7 @@ export default function CreateGroupScreen() {
             onChangeText={setIconUrl}
             placeholder="Group icon image URL (optional)"
             placeholderTextColor={themeColors.mutedText}
-            style={[styles.input, { borderColor: themeColors.border, color: themeColors.textDark }]}
+            style={[styles.input, { borderColor: themeColors.border, color: themeColors.textDark, fontSize: 16 * settings.textScale }]}
             autoCapitalize="none"
             keyboardType="url"
             accessibilityLabel="Group icon image URL"
@@ -103,7 +103,7 @@ export default function CreateGroupScreen() {
             onChangeText={setCourse}
             placeholder="Course (required)"
             placeholderTextColor={themeColors.mutedText}
-            style={[styles.input, { borderColor: themeColors.border, color: themeColors.textDark }]}
+            style={[styles.input, { borderColor: themeColors.border, color: themeColors.textDark, fontSize: 16 * settings.textScale }]}
             accessibilityLabel="Course"
           />
           <TextInput
@@ -111,7 +111,7 @@ export default function CreateGroupScreen() {
             onChangeText={setDescription}
             placeholder="Description (optional)"
             placeholderTextColor={themeColors.mutedText}
-            style={[styles.input, styles.descriptionInput, { borderColor: themeColors.border, color: themeColors.textDark }]}
+            style={[styles.input, styles.descriptionInput, { borderColor: themeColors.border, color: themeColors.textDark, fontSize: 16 * settings.textScale }]}
             multiline
             textAlignVertical="top"
             accessibilityLabel="Group description"
@@ -130,7 +130,7 @@ export default function CreateGroupScreen() {
               accessibilityRole="button"
               accessibilityLabel="Cancel group creation"
             >
-              <Text style={[styles.cancelButtonText, { color: themeColors.accent }]}>Cancel</Text>
+              <Text style={[styles.cancelButtonText, { color: themeColors.accent, fontSize: 15 * settings.textScale }]}>Cancel</Text>
             </Pressable>
             <Pressable
               onPress={() => void handleCreateGroup()}
@@ -139,7 +139,7 @@ export default function CreateGroupScreen() {
               accessibilityRole="button"
               accessibilityLabel="Open Group"
             >
-              <Text style={[styles.openButtonText, { color: themeColors.pageWhite }]}>{isSubmitting ? 'Opening...' : 'Open Group'}</Text>
+              <Text style={[styles.openButtonText, { color: themeColors.pageWhite, fontSize: 15 * settings.textScale }]}>{isSubmitting ? 'Opening...' : 'Open Group'}</Text>
             </Pressable>
           </View>
         </ScrollView>

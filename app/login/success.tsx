@@ -9,7 +9,7 @@ export default function LoginSuccessScreen() {
   const router = useRouter();
   const [user, setUser] = useState<UserProfile | null>(null);
   const [error, setError] = useState('');
-  const { colors: themeColors } = useSettings();
+  const { colors: themeColors, settings } = useSettings();
 
   useEffect(() => {
     let active = true;
@@ -38,16 +38,16 @@ export default function LoginSuccessScreen() {
     <View style={[styles.page, { backgroundColor: themeColors.pageWhite }]}>
       {error ? (
         <>
-          <Text accessibilityRole="alert" style={[styles.title, { color: themeColors.textDark }]}>Sign-in could not be completed</Text>
-          <Text style={[styles.message, { color: themeColors.mutedText }]}>{error}</Text>
+          <Text accessibilityRole="alert" style={[styles.title, { color: themeColors.textDark, fontSize: 22 * settings.textScale }]}>Sign-in could not be completed</Text>
+          <Text style={[styles.message, { color: themeColors.mutedText, fontSize: 16 * settings.textScale }]}>{error}</Text>
           <Pressable onPress={() => router.replace('/login' as Href)} style={[styles.button, { backgroundColor: themeColors.accent }]}>
-            <Text style={[styles.buttonText, { color: themeColors.pageWhite }]}>Back to sign in</Text>
+            <Text style={[styles.buttonText, { color: themeColors.pageWhite, fontSize: 16 * settings.textScale }]}>Back to sign in</Text>
           </Pressable>
         </>
       ) : (
         <>
           <ActivityIndicator color={themeColors.accent} />
-          <Text style={[styles.message, { color: themeColors.mutedText }]}>Checking your sign-in…</Text>
+          <Text style={[styles.message, { color: themeColors.mutedText, fontSize: 16 * settings.textScale }]}>Checking your sign-in…</Text>
         </>
       )}
     </View>

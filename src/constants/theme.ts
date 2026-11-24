@@ -32,6 +32,21 @@ export function getThemeColors(darkMode: boolean, accent = ''): ThemeColors {
   return { ...(darkMode ? darkColors : lightColors), ...(accent ? { accent } : {}) };
 }
 
+export const highContrastColors: ThemeColors = {
+  accent: '#FFD700',
+  pageWhite: '#000000',
+  textDark: '#FFFFFF',
+  mutedText: '#FFFFFF',
+  todoBackground: '#000000',
+  tagBackground: '#000000',
+  border: '#FFFFFF',
+};
+
+export function getAccessibleThemeColors(darkMode: boolean, highContrast: boolean, accent = ''): ThemeColors {
+  if (highContrast) return highContrastColors;
+  return getThemeColors(darkMode, accent);
+}
+
 // Legacy static styles use the light theme until they are rendered with the settings context.
 export const colors = lightColors;
 

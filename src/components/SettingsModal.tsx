@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import Slider from '@react-native-community/slider';
 import {
   Modal,
   Pressable,
@@ -51,16 +52,16 @@ export function SettingsModal({ visible, onClose }: SettingsModalProps) {
           ]}
         >
           <View style={[styles.topBar, { borderBottomColor: colors.border }]}>
-            <Text style={[styles.title, { color: colors.textDark }]}>Settings</Text>
+            <Text style={[styles.title, { color: colors.textDark, fontSize: 22 * settings.textScale }]}>Settings</Text>
             <Pressable onPress={closeWithSave} accessibilityRole="button" accessibilityLabel="Save settings">
-              <Text style={[styles.saveText, { color: colors.accent }]}>Save</Text>
+              <Text style={[styles.saveText, { color: colors.accent, fontSize: 16 * settings.textScale }]}>Save</Text>
             </Pressable>
           </View>
 
           <View style={[styles.tabs, { borderBottomColor: colors.border }]}>
             {(['app', 'user'] as const).map((item) => (
               <Pressable key={item} onPress={() => setTab(item)} style={[styles.tab, tab === item && { borderBottomColor: colors.accent }]}>
-                <Text style={[styles.tabText, { color: tab === item ? colors.accent : colors.mutedText }]}>
+                <Text style={[styles.tabText, { color: tab === item ? colors.accent : colors.mutedText, fontSize: 15 * settings.textScale }]}> 
                   {item === 'app' ? 'App Settings' : 'User Settings'}
                 </Text>
               </Pressable>
@@ -70,15 +71,33 @@ export function SettingsModal({ visible, onClose }: SettingsModalProps) {
           <ScrollView contentContainerStyle={styles.content}>
             {tab === 'app' ? (
               <>
-                <SettingToggle label="Dark mode" value={draft.darkMode} onChange={(value) => update('darkMode', value)} colors={colors} />
-                <SettingToggle label="Secrets" value={draft.secrets} onChange={(value) => update('secrets', value)} colors={colors} />
+                <View style={styles.sliderSection}>
+                  <View style={styles.sliderHeader}>
+                    <Text style={[styles.settingText, { color: colors.textDark, fontSize: 17 * settings.textScale }]}>Text size</Text>
+                    <Text style={[styles.valueText, { color: colors.mutedText, fontSize: 14 * settings.textScale }]}>{Math.round(draft.textScale * 100)}%</Text>
+                  </View>
+                  <Slider
+                    minimumValue={0.85}
+                    maximumValue={1.3}
+                    step={0.05}
+                    value={draft.textScale}
+                    onValueChange={(value) => update('textScale', Number(value.toFixed(2)))}
+                    minimumTrackTintColor={colors.accent}
+                    maximumTrackTintColor={colors.border}
+                    thumbTintColor={colors.accent}
+                    accessibilityLabel="Text size"
+                  />
+                </View>
+                <SettingToggle label="High contrast" value={draft.highContrast} onChange={(value) => update('highContrast', value)} colors={colors} textScale={settings.textScale} />
+                <SettingToggle label="Dark mode" value={draft.darkMode} onChange={(value) => update('darkMode', value)} colors={colors} textScale={settings.textScale} />
+                <SettingToggle label="Secrets" value={draft.secrets} onChange={(value) => update('secrets', value)} colors={colors} textScale={settings.textScale} />
                 {draft.secrets ? (
-                  <SettingToggle label="Party Mode" value={draft.partyMode} onChange={(value) => update('partyMode', value)} colors={colors} />
+                  <SettingToggle label="Party Mode" value={draft.partyMode} onChange={(value) => update('partyMode', value)} colors={colors} textScale={settings.textScale} />
                 ) : null}
               </>
             ) : (
               <>
-                <Text style={[styles.label, { color: colors.textDark }]}>Profile picture URL</Text>
+                <Text style={[styles.label, { color: colors.textDark, fontSize: 15 * draft.textScale }]}>Profile picture URL</Text>
                 <TextInput
                   value={draft.profileImageUri}
                   onChangeText={(value) => update('profileImageUri', value)}
@@ -88,7 +107,7 @@ export function SettingsModal({ visible, onClose }: SettingsModalProps) {
                   keyboardType="url"
                   style={[styles.input, { color: colors.textDark, borderColor: colors.border }]}
                 />
-                <Text style={[styles.label, { color: colors.textDark }]}>Display name</Text>
+                <Text style={[styles.label, { color: colors.textDark, fontSize: 15 * draft.textScale }]}>Display name</Text>
                 <TextInput
                   value={draft.displayName}
                   onChangeText={(value) => update('displayName', value)}
@@ -98,8 +117,8 @@ export function SettingsModal({ visible, onClose }: SettingsModalProps) {
                 />
                 {['Update email', 'Update password', 'Delete account'].map((label) => (
                   <Pressable key={label} onPress={() => setPlaceholder(label)} style={[styles.action, { borderColor: colors.border }]}>
-                    <Text style={[styles.actionText, { color: label === 'Delete account' ? '#C94A4A' : colors.textDark }]}>{label}</Text>
-                    <Text style={[styles.comingSoon, { color: colors.mutedText }]}>Coming soon</Text>
+                    <Text style={[styles.actionText, { color: label === 'Delete account' ? '#C94A4A' : colors.textDark, fontSize: 16 * settings.textScale }]}>{label}</Text>
+                    <Text style={[styles.comingSoon, { color: colors.mutedText, fontSize: 13 * settings.textScale }]}>Coming soon</Text>
                   </Pressable>
                 ))}
               </>
@@ -123,10 +142,10 @@ export function SettingsModal({ visible, onClose }: SettingsModalProps) {
   );
 }
 
-function SettingToggle({ label, value, onChange, colors }: { label: string; value: boolean; onChange: (value: boolean) => void; colors: ThemeColors }) {
+function SettingToggle({ label, value, onChange, colors, textScale }: { label: string; value: boolean; onChange: (value: boolean) => void; colors: ThemeColors; textScale: number }) {
   return (
     <View style={styles.toggleRow}>
-      <Text style={[styles.settingText, { color: colors.textDark }]}>{label}</Text>
+      <Text style={[styles.settingText, { color: colors.textDark, fontSize: 17 * textScale }]}>{label}</Text>
       <Switch value={value} onValueChange={onChange} trackColor={{ false: colors.border, true: colors.accent }} />
     </View>
   );
@@ -144,7 +163,10 @@ const styles = StyleSheet.create({
   tabText: { fontSize: 15, fontWeight: '600' },
   content: { padding: 22, gap: 18 },
   toggleRow: { minHeight: 54, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  sliderSection: { gap: 4 },
+  sliderHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   settingText: { fontSize: 17 },
+  valueText: { fontSize: 14 },
   label: { fontSize: 15, fontWeight: '600', marginBottom: -10 },
   input: { borderWidth: 1, borderRadius: 8, paddingHorizontal: 12, paddingVertical: 12, fontSize: 16 },
   action: { minHeight: 52, borderWidth: 1, borderRadius: 8, paddingHorizontal: 14, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },

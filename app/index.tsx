@@ -17,7 +17,7 @@ import { useSettings } from '@/settings/SettingsContext';
 
 export default function HomeScreen() {
   const router = useRouter();
-  const { colors: themeColors } = useSettings();
+  const { colors: themeColors, settings } = useSettings();
   const [todos, setTodos] = useState<TodoItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -41,28 +41,28 @@ export default function HomeScreen() {
           showsVerticalScrollIndicator={false}
         >
           <View style={styles.todoHeader}>
-            <Text style={[styles.sectionHeading, { color: themeColors.textDark }]}>My Todos</Text>
+            <Text style={[styles.sectionHeading, { color: themeColors.textDark, fontSize: 20 * settings.textScale }]}>My Todos</Text>
             <Pressable
               onPress={() => router.push('/create-todo')}
               style={[styles.addButton, { backgroundColor: themeColors.accent }]}
               accessibilityRole="button"
               accessibilityLabel="Add Todo"
             >
-              <Text style={[styles.addButtonText, { color: themeColors.pageWhite }]}>+ Add Todo</Text>
+              <Text style={[styles.addButtonText, { color: themeColors.pageWhite, fontSize: 14 * settings.textScale }]}>+ Add Todo</Text>
             </Pressable>
           </View>
 
           {isLoading ? (
             <ActivityIndicator color={themeColors.accent} style={styles.loading} />
           ) : todos.length === 0 ? (
-            <Text style={[styles.mutedText, { color: themeColors.mutedText }]}>No todos yet. Tap "+ Add Todo" to create one.</Text>
+            <Text style={[styles.mutedText, { color: themeColors.mutedText, fontSize: 16 * settings.textScale }]}>No todos yet. Tap "+ Add Todo" to create one.</Text>
           ) : (
             todos.map((todo) => <TodoListItem item={todo} key={todo.id} />)
           )}
 
           <View style={styles.timerSection}>
-            <Text style={[styles.sectionHeading, { color: themeColors.textDark }]}>Active Study Timers</Text>
-            <Text style={[styles.noTimers, { color: themeColors.mutedText }]}>No Active Timers</Text>
+            <Text style={[styles.sectionHeading, { color: themeColors.textDark, fontSize: 20 * settings.textScale }]}>Active Study Timers</Text>
+            <Text style={[styles.noTimers, { color: themeColors.mutedText, fontSize: 16 * settings.textScale }]}>No Active Timers</Text>
           </View>
         </ScrollView>
     </AppShell>

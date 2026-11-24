@@ -1,11 +1,13 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createContext, type ReactNode, useContext, useEffect, useMemo, useState } from 'react';
-import { getThemeColors, type ThemeColors } from '@/constants/theme';
+import { getAccessibleThemeColors, type ThemeColors } from '@/constants/theme';
 
 const SETTINGS_KEY = 'studybuddy.app-settings';
 
 export type AppSettings = {
   darkMode: boolean;
+  highContrast: boolean;
+  textScale: number;
   secrets: boolean;
   partyMode: boolean;
   profileImageUri: string;
@@ -14,6 +16,8 @@ export type AppSettings = {
 
 const DEFAULT_SETTINGS: AppSettings = {
   darkMode: false,
+  highContrast: false,
+  textScale: 1,
   secrets: false,
   partyMode: false,
   profileImageUri: '',
@@ -50,8 +54,8 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
   }, [settings.partyMode]);
 
   const colors = useMemo(
-    () => getThemeColors(settings.darkMode, settings.partyMode ? `hsl(${rainbowHue}, 85%, 55%)` : ''),
-    [rainbowHue, settings.darkMode, settings.partyMode],
+    () => getAccessibleThemeColors(settings.darkMode, settings.highContrast, settings.partyMode ? `hsl(${rainbowHue}, 85%, 55%)` : ''),
+    [rainbowHue, settings.darkMode, settings.highContrast, settings.partyMode],
   );
 
   const saveSettings = (nextSettings: AppSettings) => {

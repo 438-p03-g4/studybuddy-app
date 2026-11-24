@@ -7,7 +7,7 @@ import { useSettings } from '@/settings/SettingsContext';
 export default function LoginScreen() {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { colors: themeColors } = useSettings();
+  const { colors: themeColors, settings } = useSettings();
 
   const signIn = (provider: 'google' | 'github') => {
     setError('');
@@ -23,8 +23,8 @@ export default function LoginScreen() {
   return (
     <View style={[styles.page, { backgroundColor: themeColors.pageWhite }]}>
       <View style={[styles.card, { backgroundColor: themeColors.todoBackground }]}>
-        <Text style={[styles.title, { color: themeColors.textDark }]}>Welcome to StudyBuddy</Text>
-        <Text style={[styles.subtitle, { color: themeColors.mutedText }]}>Sign in to continue to your study space.</Text>
+        <Text style={[styles.title, { color: themeColors.textDark, fontSize: 28 * settings.textScale }]}>Welcome to StudyBuddy</Text>
+        <Text style={[styles.subtitle, { color: themeColors.mutedText, fontSize: 16 * settings.textScale }]}>Sign in to continue to your study space.</Text>
         {error ? <Text accessibilityRole="alert" style={styles.error}>{error}</Text> : null}
         {isLoading ? <ActivityIndicator color={themeColors.accent} /> : null}
         <Pressable
@@ -33,7 +33,7 @@ export default function LoginScreen() {
           onPress={() => signIn('google')}
           style={[styles.button, { backgroundColor: themeColors.accent }]}
         >
-          <Text style={[styles.googleButtonText, { color: themeColors.pageWhite }]}>Continue with Google</Text>
+          <Text style={[styles.googleButtonText, { color: themeColors.pageWhite, fontSize: 16 * settings.textScale }]}>Continue with Google</Text>
         </Pressable>
         <Pressable
           accessibilityRole="button"
@@ -41,7 +41,7 @@ export default function LoginScreen() {
           onPress={() => signIn('github')}
           style={[styles.button, styles.githubButton]}
         >
-          <Text style={styles.githubButtonText}>Continue with GitHub</Text>
+          <Text style={[styles.githubButtonText, { fontSize: 16 * settings.textScale }]}>Continue with GitHub</Text>
         </Pressable>
       </View>
     </View>
