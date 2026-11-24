@@ -65,8 +65,8 @@ export function AppShell({ children }: AppShellProps) {
             accessibilityRole="button"
             accessibilityLabel="Open menu"
           >
-            <Text style={styles.menuIcon}>☰</Text>
-              <Text style={styles.menuText}>Menu</Text>
+              <Text style={[styles.menuIcon, { color: themeColors.pageWhite }]}>☰</Text>
+              <Text style={[styles.menuText, { color: themeColors.pageWhite }]}>Menu</Text>
           </Pressable>
         </View>
 
@@ -80,14 +80,14 @@ export function AppShell({ children }: AppShellProps) {
         onRequestClose={() => setMenuVisible(false)}
       >
         <Pressable style={styles.modalBackdrop} onPress={() => setMenuVisible(false)}>
-          <View style={styles.menuPopup}>
+          <View style={[styles.menuPopup, { backgroundColor: themeColors.pageWhite }]}>
             {MENU_ITEMS.map((item) => (
               <Pressable
                 key={item}
                 onPress={() => handleMenuItemPress(item)}
                 style={styles.menuItem}
               >
-                <Text style={styles.menuItemText}>{item}</Text>
+                <Text style={[styles.menuItemText, { color: themeColors.textDark }]}>{item}</Text>
               </Pressable>
             ))}
           </View>

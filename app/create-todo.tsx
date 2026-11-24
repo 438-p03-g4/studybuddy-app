@@ -13,9 +13,11 @@ import {
 import { colors } from '@/constants/theme';
 import { ResponsivePage } from '@/components/ResponsivePage';
 import { createTodo, loadTodos, saveTodos } from '@/storage/todoStore';
+import { useSettings } from '@/settings/SettingsContext';
 
 export default function CreateTodoScreen() {
   const router = useRouter();
+  const { colors: themeColors } = useSettings();
   const [title, setTitle] = useState('');
   const [tag, setTag] = useState('');
 
@@ -31,33 +33,33 @@ export default function CreateTodoScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView style={[styles.safeArea, { backgroundColor: themeColors.pageWhite }]}>
       <KeyboardAvoidingView
-        style={styles.page}
+        style={[styles.page, { backgroundColor: themeColors.pageWhite }]}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       >
         <ResponsivePage>
-          <View style={styles.header}>
+          <View style={[styles.header, { backgroundColor: themeColors.accent }]}>
             <Pressable
               onPress={() => router.back()}
               style={styles.backButton}
               accessibilityRole="button"
               accessibilityLabel="Back"
             >
-              <Text style={styles.backArrow}>←</Text>
-              <Text style={styles.headerText}>Back</Text>
+              <Text style={[styles.backArrow, { color: themeColors.pageWhite }]}>←</Text>
+              <Text style={[styles.headerText, { color: themeColors.pageWhite }]}>Back</Text>
             </Pressable>
-            <Text style={styles.headerTitle}>Create New Todo</Text>
+            <Text style={[styles.headerTitle, { color: themeColors.pageWhite }]}>Create New Todo</Text>
           </View>
 
           <View style={styles.form}>
-            <Text style={styles.heading}>My Todos</Text>
+            <Text style={[styles.heading, { color: themeColors.textDark }]}>My Todos</Text>
             <TextInput
               value={title}
               onChangeText={setTitle}
               placeholder="Title (required)"
-              placeholderTextColor={colors.mutedText}
-              style={styles.input}
+              placeholderTextColor={themeColors.mutedText}
+              style={[styles.input, { borderColor: themeColors.border, color: themeColors.textDark }]}
               returnKeyType="next"
               accessibilityLabel="Title (required)"
             />
@@ -65,19 +67,19 @@ export default function CreateTodoScreen() {
               value={tag}
               onChangeText={setTag}
               placeholder="Tag (optional)"
-              placeholderTextColor={colors.mutedText}
-              style={styles.input}
+              placeholderTextColor={themeColors.mutedText}
+              style={[styles.input, { borderColor: themeColors.border, color: themeColors.textDark }]}
               returnKeyType="done"
               accessibilityLabel="Tag (optional)"
             />
             <Pressable
               onPress={() => void handleCreate()}
               disabled={title.trim().length === 0}
-              style={[styles.createButton, title.trim().length === 0 && styles.disabledButton]}
+              style={[styles.createButton, { backgroundColor: themeColors.accent }, title.trim().length === 0 && styles.disabledButton]}
               accessibilityRole="button"
               accessibilityLabel="Create Todo"
             >
-              <Text style={styles.createButtonText}>Create Todo</Text>
+              <Text style={[styles.createButtonText, { color: themeColors.pageWhite }]}>Create Todo</Text>
             </Pressable>
           </View>
         </ResponsivePage>

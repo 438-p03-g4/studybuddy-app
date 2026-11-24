@@ -13,9 +13,11 @@ import { colors, spacing } from '@/constants/theme';
 import { TodoListItem } from '@/components/TodoListItem';
 import { loadTodos } from '@/storage/todoStore';
 import type { TodoItem } from '@/types/todo';
+import { useSettings } from '@/settings/SettingsContext';
 
 export default function HomeScreen() {
   const router = useRouter();
+  const { colors: themeColors } = useSettings();
   const [todos, setTodos] = useState<TodoItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -34,33 +36,33 @@ export default function HomeScreen() {
   return (
     <AppShell>
         <ScrollView
-          style={styles.content}
+          style={[styles.content, { backgroundColor: themeColors.pageWhite }]}
           contentContainerStyle={styles.contentContainer}
           showsVerticalScrollIndicator={false}
         >
           <View style={styles.todoHeader}>
-            <Text style={styles.sectionHeading}>My Todos</Text>
+            <Text style={[styles.sectionHeading, { color: themeColors.textDark }]}>My Todos</Text>
             <Pressable
               onPress={() => router.push('/create-todo')}
-              style={styles.addButton}
+              style={[styles.addButton, { backgroundColor: themeColors.accent }]}
               accessibilityRole="button"
               accessibilityLabel="Add Todo"
             >
-              <Text style={styles.addButtonText}>+ Add Todo</Text>
+              <Text style={[styles.addButtonText, { color: themeColors.pageWhite }]}>+ Add Todo</Text>
             </Pressable>
           </View>
 
           {isLoading ? (
-            <ActivityIndicator color={colors.accent} style={styles.loading} />
+            <ActivityIndicator color={themeColors.accent} style={styles.loading} />
           ) : todos.length === 0 ? (
-            <Text style={styles.mutedText}>No todos yet. Tap "+ Add Todo" to create one.</Text>
+            <Text style={[styles.mutedText, { color: themeColors.mutedText }]}>No todos yet. Tap "+ Add Todo" to create one.</Text>
           ) : (
             todos.map((todo) => <TodoListItem item={todo} key={todo.id} />)
           )}
 
           <View style={styles.timerSection}>
-            <Text style={styles.sectionHeading}>Active Study Timers</Text>
-            <Text style={styles.noTimers}>No Active Timers</Text>
+            <Text style={[styles.sectionHeading, { color: themeColors.textDark }]}>Active Study Timers</Text>
+            <Text style={[styles.noTimers, { color: themeColors.mutedText }]}>No Active Timers</Text>
           </View>
         </ScrollView>
     </AppShell>

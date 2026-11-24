@@ -2,10 +2,12 @@ import { useState } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
 import { startOAuthLogin } from '@/auth/client';
 import { colors } from '@/constants/theme';
+import { useSettings } from '@/settings/SettingsContext';
 
 export default function LoginScreen() {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const { colors: themeColors } = useSettings();
 
   const signIn = (provider: 'google' | 'github') => {
     setError('');
@@ -19,19 +21,19 @@ export default function LoginScreen() {
   };
 
   return (
-    <View style={styles.page}>
-      <View style={styles.card}>
-        <Text style={styles.title}>Welcome to StudyBuddy</Text>
-        <Text style={styles.subtitle}>Sign in to continue to your study space.</Text>
+    <View style={[styles.page, { backgroundColor: themeColors.pageWhite }]}>
+      <View style={[styles.card, { backgroundColor: themeColors.todoBackground }]}>
+        <Text style={[styles.title, { color: themeColors.textDark }]}>Welcome to StudyBuddy</Text>
+        <Text style={[styles.subtitle, { color: themeColors.mutedText }]}>Sign in to continue to your study space.</Text>
         {error ? <Text accessibilityRole="alert" style={styles.error}>{error}</Text> : null}
-        {isLoading ? <ActivityIndicator color={colors.accent} /> : null}
+        {isLoading ? <ActivityIndicator color={themeColors.accent} /> : null}
         <Pressable
           accessibilityRole="button"
           disabled={isLoading}
           onPress={() => signIn('google')}
-          style={[styles.button, styles.googleButton]}
+          style={[styles.button, { backgroundColor: themeColors.accent }]}
         >
-          <Text style={styles.googleButtonText}>Continue with Google</Text>
+          <Text style={[styles.googleButtonText, { color: themeColors.pageWhite }]}>Continue with Google</Text>
         </Pressable>
         <Pressable
           accessibilityRole="button"

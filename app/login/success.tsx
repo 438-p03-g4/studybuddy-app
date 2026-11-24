@@ -3,11 +3,13 @@ import { Redirect, useRouter, type Href } from 'expo-router';
 import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
 import { fetchCurrentUser, type UserProfile } from '@/auth/client';
 import { colors } from '@/constants/theme';
+import { useSettings } from '@/settings/SettingsContext';
 
 export default function LoginSuccessScreen() {
   const router = useRouter();
   const [user, setUser] = useState<UserProfile | null>(null);
   const [error, setError] = useState('');
+  const { colors: themeColors } = useSettings();
 
   useEffect(() => {
     let active = true;
@@ -33,19 +35,19 @@ export default function LoginSuccessScreen() {
   if (user) return <Redirect href="/" />;
 
   return (
-    <View style={styles.page}>
+    <View style={[styles.page, { backgroundColor: themeColors.pageWhite }]}>
       {error ? (
         <>
-          <Text accessibilityRole="alert" style={styles.title}>Sign-in could not be completed</Text>
-          <Text style={styles.message}>{error}</Text>
-          <Pressable onPress={() => router.replace('/login' as Href)} style={styles.button}>
-            <Text style={styles.buttonText}>Back to sign in</Text>
+          <Text accessibilityRole="alert" style={[styles.title, { color: themeColors.textDark }]}>Sign-in could not be completed</Text>
+          <Text style={[styles.message, { color: themeColors.mutedText }]}>{error}</Text>
+          <Pressable onPress={() => router.replace('/login' as Href)} style={[styles.button, { backgroundColor: themeColors.accent }]}>
+            <Text style={[styles.buttonText, { color: themeColors.pageWhite }]}>Back to sign in</Text>
           </Pressable>
         </>
       ) : (
         <>
-          <ActivityIndicator color={colors.accent} />
-          <Text style={styles.message}>Checking your sign-in…</Text>
+          <ActivityIndicator color={themeColors.accent} />
+          <Text style={[styles.message, { color: themeColors.mutedText }]}>Checking your sign-in…</Text>
         </>
       )}
     </View>

@@ -1,17 +1,19 @@
 import { ScrollView, StyleSheet, Text } from 'react-native';
 import { AppShell } from '@/components/AppShell';
 import { colors, spacing } from '@/constants/theme';
+import { useSettings } from '@/settings/SettingsContext';
 
 export default function StudyGroupsScreen() {
+  const { colors: themeColors } = useSettings();
   return (
     <AppShell>
       <ScrollView
-        style={styles.content}
+        style={[styles.content, { backgroundColor: themeColors.pageWhite }]}
         contentContainerStyle={styles.contentContainer}
         showsVerticalScrollIndicator={false}
       >
-        <Text style={styles.sectionHeading}>My Study Groups</Text>
-        <Text style={styles.emptyState}>No Active Study Groups</Text>
+        <Text style={[styles.sectionHeading, { color: themeColors.textDark }]}>My Study Groups</Text>
+        <Text style={[styles.emptyState, { color: themeColors.mutedText }]}>No Active Study Groups</Text>
       </ScrollView>
     </AppShell>
   );

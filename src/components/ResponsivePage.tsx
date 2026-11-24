@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { StyleSheet, View, useWindowDimensions } from 'react-native';
 import { colors } from '@/constants/theme';
+import { useSettings } from '@/settings/SettingsContext';
 
 type ResponsivePageProps = {
   children: ReactNode;
@@ -12,11 +13,12 @@ type ResponsivePageProps = {
  */
 export function ResponsivePage({ children }: ResponsivePageProps) {
   const { width } = useWindowDimensions();
+  const { colors: themeColors } = useSettings();
   const isDesktop = width >= 768;
 
   return (
-    <View style={styles.outer}>
-      <View style={[styles.content, isDesktop && styles.desktopContent]}>{children}</View>
+    <View style={[styles.outer, { backgroundColor: themeColors.pageWhite }]}>
+      <View style={[styles.content, { backgroundColor: themeColors.pageWhite }, isDesktop && styles.desktopContent]}>{children}</View>
     </View>
   );
 }
