@@ -13,6 +13,8 @@ import {
 } from 'react-native';
 import { type ThemeColors } from '@/constants/theme';
 import { useSettings, type AppSettings } from '@/settings/SettingsContext';
+import { updateDisplayName } from '@/auth/client';
+import { DEV_AUTH_BYPASS_ENABLED } from '@/auth/devBypass';
 
 type SettingsModalProps = { visible: boolean; onClose: () => void };
 
@@ -22,6 +24,8 @@ export function SettingsModal({ visible, onClose }: SettingsModalProps) {
   const [tab, setTab] = useState<'app' | 'user'>('app');
   const [draft, setDraft] = useState<AppSettings>(settings);
   const [placeholder, setPlaceholder] = useState<string | null>(null);
+  const [saveError, setSaveError] = useState('');
+  const [isSaving, setIsSaving] = useState(false);
   const isDesktop = width >= 700;
 
   useEffect(() => {
@@ -32,9 +36,28 @@ export function SettingsModal({ visible, onClose }: SettingsModalProps) {
     setDraft((current) => ({ ...current, [key]: value }));
   };
 
-  const closeWithSave = () => {
-    saveSettings(draft);
-    onClose();
+  const closeWithSave = async () => {
+    const nextDisplayName = draft.displayName.trim();
+    if (!nextDisplayName) {
+      setSaveError('Display name cannot be empty.');
+      return;
+    }
+
+    setSaveError('');
+    setIsSaving(true);
+    try {
+      let savedDisplayName = nextDisplayName;
+      if (!DEV_AUTH_BYPASS_ENABLED && nextDisplayName !== settings.displayName) {
+        const savedUser = await updateDisplayName(nextDisplayName);
+        savedDisplayName = savedUser.displayName;
+      }
+      saveSettings({ ...draft, displayName: savedDisplayName });
+      onClose();
+    } catch (error) {
+      setSaveError(error instanceof Error ? error.message : 'Unable to save your display name.');
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
@@ -53,7 +76,7 @@ export function SettingsModal({ visible, onClose }: SettingsModalProps) {
         >
           <View style={[styles.topBar, { borderBottomColor: colors.border }]}>
             <Text style={[styles.title, { color: colors.textDark, fontSize: 22 * settings.textScale }]}>Settings</Text>
-            <Pressable onPress={closeWithSave} accessibilityRole="button" accessibilityLabel="Save settings">
+            <Pressable onPress={() => void closeWithSave()} disabled={isSaving} accessibilityRole="button" accessibilityLabel="Save settings">
               <Text style={[styles.saveText, { color: colors.accent, fontSize: 16 * settings.textScale }]}>Save</Text>
             </Pressable>
           </View>
@@ -107,6 +130,7 @@ export function SettingsModal({ visible, onClose }: SettingsModalProps) {
                   keyboardType="url"
                   style={[styles.input, { color: colors.textDark, borderColor: colors.border }]}
                 />
+                {saveError ? <Text style={[styles.error, { color: '#C94A4A' }]}>{saveError}</Text> : null}
                 <Text style={[styles.label, { color: colors.textDark, fontSize: 15 * draft.textScale }]}>Display name</Text>
                 <TextInput
                   value={draft.displayName}
@@ -169,6 +193,7 @@ const styles = StyleSheet.create({
   valueText: { fontSize: 14 },
   label: { fontSize: 15, fontWeight: '600', marginBottom: -10 },
   input: { borderWidth: 1, borderRadius: 8, paddingHorizontal: 12, paddingVertical: 12, fontSize: 16 },
+  error: { fontSize: 14, lineHeight: 20 },
   action: { minHeight: 52, borderWidth: 1, borderRadius: 8, paddingHorizontal: 14, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   actionText: { fontSize: 16, fontWeight: '600' },
   comingSoon: { fontSize: 13 },

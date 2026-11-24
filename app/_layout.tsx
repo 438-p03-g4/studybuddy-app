@@ -85,7 +85,7 @@ export default function RootLayout() {
   return (
     <>
       <StatusBar style="dark" />
-      <SettingsProvider>
+      <SettingsProvider initialDisplayName={currentUser?.displayName ?? ''}>
         <AuthContextProvider value={currentUser}>
           <Stack
             screenOptions={{

@@ -32,20 +32,28 @@ type SettingsContextValue = {
 
 const SettingsContext = createContext<SettingsContextValue | null>(null);
 
-export function SettingsProvider({ children }: { children: ReactNode }) {
+export function SettingsProvider({ children, initialDisplayName = '' }: { children: ReactNode; initialDisplayName?: string }) {
   const [settings, setSettings] = useState(DEFAULT_SETTINGS);
   const [rainbowHue, setRainbowHue] = useState(0);
 
   useEffect(() => {
     void AsyncStorage.getItem(SETTINGS_KEY).then((stored) => {
-      if (!stored) return;
+      if (!stored) {
+        setSettings((current) => ({ ...current, displayName: initialDisplayName }));
+        return;
+      }
       try {
-        setSettings({ ...DEFAULT_SETTINGS, ...(JSON.parse(stored) as Partial<AppSettings>) });
+        const savedSettings = JSON.parse(stored) as Partial<AppSettings>;
+        setSettings({
+          ...DEFAULT_SETTINGS,
+          ...savedSettings,
+          displayName: savedSettings.displayName || initialDisplayName,
+        });
       } catch {
         // Ignore invalid local settings and keep defaults.
       }
     });
-  }, []);
+  }, [initialDisplayName]);
 
   useEffect(() => {
     if (!settings.partyMode) return;
