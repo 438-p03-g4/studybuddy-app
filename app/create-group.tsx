@@ -13,9 +13,11 @@ import {
 import { createStudyGroup } from '@/api/studyGroups';
 import { AppShell } from '@/components/AppShell';
 import { colors, spacing } from '@/constants/theme';
+import { useSettings } from '@/settings/SettingsContext';
 
 export default function CreateGroupScreen() {
   const router = useRouter();
+  const { colors: themeColors, settings } = useSettings();
   const [name, setName] = useState('');
   const [iconUrl, setIconUrl] = useState('');
   const [course, setCourse] = useState('');
@@ -68,7 +70,7 @@ export default function CreateGroupScreen() {
   return (
     <AppShell>
       <KeyboardAvoidingView
-        style={styles.page}
+        style={[styles.page, { backgroundColor: themeColors.pageWhite }]}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       >
         <ScrollView
@@ -76,22 +78,22 @@ export default function CreateGroupScreen() {
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
-          <Text style={styles.heading}>Create Study Group</Text>
+          <Text style={[styles.heading, { color: themeColors.textDark, fontSize: 20 * settings.textScale }]}>Create Study Group</Text>
 
           <TextInput
             value={name}
             onChangeText={setName}
             placeholder="Group name (required)"
-            placeholderTextColor={colors.mutedText}
-            style={styles.input}
+            placeholderTextColor={themeColors.mutedText}
+            style={[styles.input, { borderColor: themeColors.border, color: themeColors.textDark, fontSize: 16 * settings.textScale }]}
             accessibilityLabel="Group name"
           />
           <TextInput
             value={iconUrl}
             onChangeText={setIconUrl}
             placeholder="Group icon image URL (optional)"
-            placeholderTextColor={colors.mutedText}
-            style={styles.input}
+            placeholderTextColor={themeColors.mutedText}
+            style={[styles.input, { borderColor: themeColors.border, color: themeColors.textDark, fontSize: 16 * settings.textScale }]}
             autoCapitalize="none"
             keyboardType="url"
             accessibilityLabel="Group icon image URL"
@@ -100,16 +102,16 @@ export default function CreateGroupScreen() {
             value={course}
             onChangeText={setCourse}
             placeholder="Course (required)"
-            placeholderTextColor={colors.mutedText}
-            style={styles.input}
+            placeholderTextColor={themeColors.mutedText}
+            style={[styles.input, { borderColor: themeColors.border, color: themeColors.textDark, fontSize: 16 * settings.textScale }]}
             accessibilityLabel="Course"
           />
           <TextInput
             value={description}
             onChangeText={setDescription}
             placeholder="Description (optional)"
-            placeholderTextColor={colors.mutedText}
-            style={[styles.input, styles.descriptionInput]}
+            placeholderTextColor={themeColors.mutedText}
+            style={[styles.input, styles.descriptionInput, { borderColor: themeColors.border, color: themeColors.textDark, fontSize: 16 * settings.textScale }]}
             multiline
             textAlignVertical="top"
             accessibilityLabel="Group description"
@@ -124,20 +126,20 @@ export default function CreateGroupScreen() {
                 router.replace('/find-study-groups');
               }}
               disabled={isSubmitting}
-              style={[styles.cancelButton, isSubmitting && styles.disabledButton]}
+              style={[styles.cancelButton, { borderColor: themeColors.accent }, isSubmitting && styles.disabledButton]}
               accessibilityRole="button"
               accessibilityLabel="Cancel group creation"
             >
-              <Text style={styles.cancelButtonText}>Cancel</Text>
+              <Text style={[styles.cancelButtonText, { color: themeColors.accent, fontSize: 15 * settings.textScale }]}>Cancel</Text>
             </Pressable>
             <Pressable
               onPress={() => void handleCreateGroup()}
               disabled={isSubmitting}
-              style={[styles.openButton, isSubmitting && styles.disabledButton]}
+              style={[styles.openButton, { backgroundColor: themeColors.accent }, isSubmitting && styles.disabledButton]}
               accessibilityRole="button"
               accessibilityLabel="Open Group"
             >
-              <Text style={styles.openButtonText}>{isSubmitting ? 'Opening...' : 'Open Group'}</Text>
+              <Text style={[styles.openButtonText, { color: themeColors.pageWhite, fontSize: 15 * settings.textScale }]}>{isSubmitting ? 'Opening...' : 'Open Group'}</Text>
             </Pressable>
           </View>
         </ScrollView>

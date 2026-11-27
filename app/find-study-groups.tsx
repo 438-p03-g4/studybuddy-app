@@ -14,9 +14,11 @@ import { fetchStudyGroups } from '@/api/studyGroups';
 import { AppShell } from '@/components/AppShell';
 import { colors, spacing } from '@/constants/theme';
 import type { StudyGroup } from '@/types/studyGroup';
+import { useSettings } from '@/settings/SettingsContext';
 
 export default function FindStudyGroupsScreen() {
   const router = useRouter();
+  const { colors: themeColors, settings } = useSettings();
   const { width } = useWindowDimensions();
   const isDesktop = width >= 700;
   const [query, setQuery] = useState('');
@@ -50,35 +52,35 @@ export default function FindStudyGroupsScreen() {
 
   return (
     <AppShell>
-      <View style={styles.pageContent}>
-        <Text style={styles.sectionHeading}>Find Study Groups</Text>
+      <View style={[styles.pageContent, { backgroundColor: themeColors.pageWhite }]}>
+        <Text style={[styles.sectionHeading, { color: themeColors.textDark, fontSize: 20 * settings.textScale }]}>Find Study Groups</Text>
         <View style={[styles.searchRow, isDesktop && styles.searchRowDesktop]}>
           <TextInput
             value={query}
             onChangeText={setQuery}
             placeholder="Search by group name or course"
-            placeholderTextColor={colors.mutedText}
-            style={[styles.searchInput, isDesktop && styles.searchInputDesktop]}
+            placeholderTextColor={themeColors.mutedText}
+            style={[styles.searchInput, { borderColor: themeColors.border, color: themeColors.textDark, fontSize: 16 * settings.textScale }, isDesktop && styles.searchInputDesktop]}
             autoCapitalize="none"
             autoCorrect={false}
             accessibilityLabel="Search study groups"
           />
           <Pressable
             onPress={() => router.push('/create-group')}
-            style={styles.createButton}
+            style={[styles.createButton, { backgroundColor: themeColors.accent }]}
             accessibilityRole="button"
             accessibilityLabel="Create Group"
           >
-            <Text style={styles.createButtonText}>Create Group</Text>
+            <Text style={[styles.createButtonText, { color: themeColors.pageWhite, fontSize: 15 * settings.textScale }]}>Create Group</Text>
           </Pressable>
         </View>
 
         {isLoading ? (
-          <ActivityIndicator color={colors.accent} style={styles.loading} />
+          <ActivityIndicator color={themeColors.accent} style={styles.loading} />
         ) : errorMessage ? (
           <Text style={styles.errorMessage}>{errorMessage}</Text>
         ) : groups.length === 0 ? (
-          <Text style={styles.emptyState}>No Groups Found</Text>
+          <Text style={[styles.emptyState, { color: themeColors.mutedText, fontSize: 16 * settings.textScale }]}>No Groups Found</Text>
         ) : (
           <ScrollView
             style={styles.groupList}
@@ -86,9 +88,9 @@ export default function FindStudyGroupsScreen() {
             showsVerticalScrollIndicator={false}
           >
             {groups.map((group) => (
-              <View key={group.id} style={styles.groupCard}>
-                <Text style={styles.groupName}>{group.name}</Text>
-                <Text style={styles.groupDetail}>{group.course}</Text>
+              <View key={group.id} style={[styles.groupCard, { backgroundColor: themeColors.todoBackground }]}>
+                <Text style={[styles.groupName, { color: themeColors.textDark, fontSize: 17 * settings.textScale }]}>{group.name}</Text>
+                <Text style={[styles.groupDetail, { color: themeColors.mutedText, fontSize: 14 * settings.textScale }]}>{group.course}</Text>
               </View>
             ))}
           </ScrollView>
