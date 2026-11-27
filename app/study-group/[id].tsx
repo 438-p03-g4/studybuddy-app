@@ -128,7 +128,11 @@ export default function StudyGroupForumScreen() {
 
       <Modal visible={infoVisible} transparent animationType="fade" onRequestClose={() => setInfoVisible(false)}>
         <View style={styles.modalBackdrop}>
-          <View style={[styles.infoCard, { backgroundColor: colors.pageWhite }]}>
+          <View
+            accessibilityRole="dialog"
+            accessibilityLabel="Group Information"
+            style={[styles.infoCard, { backgroundColor: colors.pageWhite }]}
+          >
             <View style={styles.infoTitleRow}>
               <Text style={[styles.infoTitle, { color: colors.textDark, fontSize: 21 * settings.textScale }]}>Group Information</Text>
               <Pressable onPress={() => setInfoVisible(false)} accessibilityRole="button" accessibilityLabel="Close group information"><Text style={[styles.closeText, { color: colors.accent }]}>✕</Text></Pressable>

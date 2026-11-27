@@ -24,11 +24,13 @@ test('displays group information and members in the forum popup', async ({ page 
   await page.goto('/study-group/mock');
   await page.getByRole('button', { name: 'View study group information' }).click();
 
-  await expect(page.getByText('Group Information', { exact: true })).toBeVisible();
-  await expect(page.getByText('CST438', { exact: true })).toBeVisible();
-  await expect(page.getByText('Alex Johnson', { exact: true })).toBeVisible();
-  await expect(page.getByText('Jamie Lee', { exact: true })).toBeVisible();
-  await expect(page.getByText('Taylor Smith', { exact: true })).toBeVisible();
+  const popup = page.getByRole('dialog', { name: 'Group Information' });
+  await expect(popup).toBeVisible();
+  await expect(popup.getByText('Group Information', { exact: true })).toBeVisible();
+  await expect(popup.getByText('CST438', { exact: true })).toBeVisible();
+  await expect(popup.getByText('Alex Johnson', { exact: true })).toBeVisible();
+  await expect(popup.getByText('Jamie Lee', { exact: true })).toBeVisible();
+  await expect(popup.getByText('Taylor Smith', { exact: true })).toBeVisible();
 });
 
 test('posts a message in the forum mockup', async ({ page }) => {
