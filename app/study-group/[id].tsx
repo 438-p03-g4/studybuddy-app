@@ -89,7 +89,7 @@ export default function StudyGroupForumScreen() {
             <Text style={[styles.backText, { color: colors.accent, fontSize: 15 * settings.textScale }]}>← Back</Text>
           </Pressable>
           <View style={styles.titleRow}>
-            <Text numberOfLines={1} style={[styles.title, { color: colors.textDark, fontSize: 20 * settings.textScale }]}>{forum?.group.name ?? 'Study Group'}</Text>
+            <Text testID="study-group-forum-title" numberOfLines={1} style={[styles.title, { color: colors.textDark, fontSize: 20 * settings.textScale }]}>{forum?.group.name ?? 'Study Group'}</Text>
             <Pressable onPress={() => setInfoVisible(true)} accessibilityRole="button" accessibilityLabel="View study group information">
               <Text style={[styles.infoIcon, { color: colors.accent }]}>ⓘ</Text>
             </Pressable>

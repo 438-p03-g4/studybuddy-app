@@ -16,7 +16,7 @@ test('opens the populated forum mockup from My Study Groups', async ({ page }) =
   await page.getByRole('button', { name: 'Open CST438 Study Buddies' }).click();
 
   await expect(page).toHaveURL(/\/study-group\/mock$/);
-  await expect(page.getByText('CST438 Study Buddies', { exact: true })).toBeVisible();
+  await expect(page.getByTestId('study-group-forum-title')).toHaveText('CST438 Study Buddies');
   await expect(page.getByText('Welcome to the group!', { exact: false })).toBeVisible();
   await expect(page.getByLabel('New forum message')).toBeVisible();
 });
