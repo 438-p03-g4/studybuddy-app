@@ -1,12 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { colors } from '@/constants/theme';
 import type { TodoItem } from '@/types/todo';
+import { useSettings } from '@/settings/SettingsContext';
 
 export function TodoListItem({ item }: { item: TodoItem }) {
+  const { colors: themeColors, settings } = useSettings();
   return (
-    <View style={styles.container} accessible accessibilityLabel={`Todo ${item.title}`}>
-      <Text style={styles.title}>{item.title}</Text>
-      {item.tag.length > 0 && <Text style={styles.tag}>{item.tag}</Text>}
+    <View style={[styles.container, { backgroundColor: themeColors.todoBackground }]} accessible accessibilityLabel={`Todo ${item.title}`}>
+      <Text style={[styles.title, { color: themeColors.textDark, fontSize: 16 * settings.textScale }]}>{item.title}</Text>
+      {item.tag.length > 0 && <Text style={[styles.tag, { color: themeColors.textDark, backgroundColor: themeColors.tagBackground, fontSize: 12 * settings.textScale }]}>{item.tag}</Text>}
     </View>
   );
 }

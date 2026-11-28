@@ -58,6 +58,20 @@ the Android emulator uses `http://10.0.2.2:8080`. The endpoint requires an
 authenticated StudyBuddy session, so OAuth must be configured before protected
 group results can load.
 
+## Offline developer access
+
+To work on the frontend without a running API or OAuth session, create a local
+`.env` file with:
+
+```text
+EXPO_PUBLIC_DEV_AUTH_BYPASS=true
+```
+
+Restart Expo after changing environment variables. In development builds, the
+login page will show a `Dev bypass` button and the app will use a local test
+user. The bypass is gated by Expo's development flag and is not available in
+production builds.
+
 ## Onboarding issues
 
 File client blockers here with label `onboarding`, one issue per problem. Include

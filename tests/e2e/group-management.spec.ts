@@ -22,14 +22,14 @@ test.beforeEach(async ({ page }) => {
   });
 });
 
-test('opens My Study Groups and shows the empty state', async ({ page }) => {
+test('opens My Study Groups and shows the available group links', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('button', { name: 'Open menu' }).click();
   await page.getByText('My Study Groups', { exact: true }).click();
 
   await expect(page).toHaveURL(/\/study-groups$/);
   await expect(page.getByText('My Study Groups', { exact: true })).toBeVisible();
-  await expect(page.getByText('No Active Study Groups', { exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Open CST438 Study Buddies' })).toBeVisible();
 });
 
 test('searches groups and opens the group creation page', async ({ page }) => {
