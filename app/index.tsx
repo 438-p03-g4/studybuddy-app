@@ -52,15 +52,6 @@ export default function HomeScreen() {
             </Pressable>
           </View>
 
-          <Pressable
-            onPress={() => router.push('/study-group/mock' as never)}
-            style={[styles.mockButton, { borderColor: themeColors.accent }]}
-            accessibilityRole="button"
-            accessibilityLabel="View study group forum mockup"
-          >
-            <Text style={[styles.mockButtonText, { color: themeColors.accent, fontSize: 15 * settings.textScale }]}>View Forum Mockup</Text>
-          </Pressable>
-
           {isLoading ? (
             <ActivityIndicator color={themeColors.accent} style={styles.loading} />
           ) : todos.length === 0 ? (
@@ -107,16 +98,6 @@ const styles = StyleSheet.create({
   addButtonText: {
     color: colors.pageWhite,
     fontSize: 14,
-    fontWeight: '600',
-  },
-  mockButton: {
-    alignSelf: 'flex-start',
-    borderWidth: 1,
-    borderRadius: 8,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-  },
-  mockButtonText: {
     fontWeight: '600',
   },
   mutedText: {

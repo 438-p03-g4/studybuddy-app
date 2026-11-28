@@ -15,6 +15,7 @@ import { AppShell } from '@/components/AppShell';
 import { colors, spacing } from '@/constants/theme';
 import type { StudyGroup } from '@/types/studyGroup';
 import { useSettings } from '@/settings/SettingsContext';
+import { StudyGroupLink } from '@/components/StudyGroupLink';
 
 export default function FindStudyGroupsScreen() {
   const router = useRouter();
@@ -88,10 +89,11 @@ export default function FindStudyGroupsScreen() {
             showsVerticalScrollIndicator={false}
           >
             {groups.map((group) => (
-              <View key={group.id} style={[styles.groupCard, { backgroundColor: themeColors.todoBackground }]}>
-                <Text style={[styles.groupName, { color: themeColors.textDark, fontSize: 17 * settings.textScale }]}>{group.name}</Text>
-                <Text style={[styles.groupDetail, { color: themeColors.mutedText, fontSize: 14 * settings.textScale }]}>{group.course}</Text>
-              </View>
+              <StudyGroupLink
+                key={group.id}
+                group={group}
+                onPress={() => router.push(`/study-group/${group.id}` as never)}
+              />
             ))}
           </ScrollView>
         )}
@@ -155,21 +157,6 @@ const styles = StyleSheet.create({
   groupListContent: {
     gap: 12,
     paddingBottom: 20,
-  },
-  groupCard: {
-    borderRadius: 8,
-    backgroundColor: colors.todoBackground,
-    padding: 16,
-    gap: 6,
-  },
-  groupName: {
-    color: colors.textDark,
-    fontSize: 17,
-    fontWeight: '700',
-  },
-  groupDetail: {
-    color: colors.mutedText,
-    fontSize: 14,
   },
   emptyState: {
     color: colors.mutedText,

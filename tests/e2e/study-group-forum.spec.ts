@@ -10,9 +10,10 @@ test.beforeEach(async ({ page }) => {
   });
 });
 
-test('opens the populated forum mockup from the homepage', async ({ page }) => {
-  await page.goto('/');
-  await page.getByRole('button', { name: 'View study group forum mockup' }).click();
+test('opens the populated forum mockup from My Study Groups', async ({ page }) => {
+  await page.goto('/study-groups');
+  await expect(page.getByRole('button', { name: 'Open CST438 Study Buddies' })).toBeVisible();
+  await page.getByRole('button', { name: 'Open CST438 Study Buddies' }).click();
 
   await expect(page).toHaveURL(/\/study-group\/mock$/);
   await expect(page.getByText('CST438 Study Buddies', { exact: true })).toBeVisible();

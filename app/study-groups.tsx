@@ -1,22 +1,30 @@
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, ScrollView, StyleSheet, Text } from 'react-native';
 import { useRouter } from 'expo-router';
 import { fetchMyStudyGroups } from '@/api/forum';
 import { AppShell } from '@/components/AppShell';
 import { useSettings } from '@/settings/SettingsContext';
 import type { StudyGroup } from '@/types/studyGroup';
+import { StudyGroupLink } from '@/components/StudyGroupLink';
+
+const MOCK_GROUP: StudyGroup = {
+  id: 'mock',
+  name: 'CST438 Study Buddies',
+  course: 'CST438',
+  description: 'A friendly place to compare notes, ask questions, and prepare for upcoming assignments.',
+};
 
 export default function StudyGroupsScreen() {
   const router = useRouter();
   const { colors, settings } = useSettings();
-  const [groups, setGroups] = useState<StudyGroup[]>([]);
+  const [groups, setGroups] = useState<StudyGroup[]>([MOCK_GROUP]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const controller = new AbortController();
     fetchMyStudyGroups(controller.signal)
-      .then(setGroups)
-      .catch(() => setGroups([]))
+      .then((loadedGroups) => setGroups([MOCK_GROUP, ...loadedGroups]))
+      .catch(() => setGroups([MOCK_GROUP]))
       .finally(() => setIsLoading(false));
     return () => controller.abort();
   }, []);
@@ -35,16 +43,11 @@ export default function StudyGroupsScreen() {
           <Text style={[styles.emptyState, { color: colors.mutedText, fontSize: 16 * settings.textScale }]}>No Active Study Groups</Text>
         ) : (
           groups.map((group) => (
-            <Pressable
+            <StudyGroupLink
               key={group.id}
+              group={group}
               onPress={() => router.push(`/study-group/${group.id}` as never)}
-              style={[styles.groupCard, { backgroundColor: colors.todoBackground }]}
-              accessibilityRole="button"
-              accessibilityLabel={`Open ${group.name}`}
-            >
-              <Text style={[styles.groupName, { color: colors.textDark, fontSize: 17 * settings.textScale }]}>{group.name}</Text>
-              <Text style={[styles.groupCourse, { color: colors.mutedText, fontSize: 14 * settings.textScale }]}>{group.course}</Text>
-            </Pressable>
+            />
           ))
         )}
       </ScrollView>
@@ -57,7 +60,4 @@ const styles = StyleSheet.create({
   contentContainer: { paddingHorizontal: 20, paddingVertical: 22, gap: 12 },
   sectionHeading: { fontWeight: '700' },
   emptyState: { paddingTop: 8 },
-  groupCard: { borderRadius: 10, padding: 16, gap: 6 },
-  groupName: { fontWeight: '700' },
-  groupCourse: {},
 });
